@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>도개고 살아남기</title>
+<style>
+:root{--bg:#f6f4f0;--card:#fff;--tx:#1d1d22;--mut:#777;--ln:#e3dfd8;--ac:#a8324f;--g:#2f8f6b;--y:#c9962b;--r:#c0392b;--b:#3a6ea5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1319;--card:#161d26;--tx:#e8e8ea;--mut:#8b94a0;--ln:#27313d;--ac:#e0607e;--g:#4cc296;--y:#e0b04a;--r:#e56a5c;--b:#6aa3dc}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;max-width:1100px;margin:0 auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+h1{font-size:20px;margin:4px 0}h2{font-size:15px;margin:0 0 6px;color:var(--ac)}
+.mut{color:var(--mut);font-size:13px}.big{font-size:22px;font-weight:700}
+.bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:13px}.bar b{width:34px;font-weight:500;color:var(--mut)}
+.bar i{flex:1;height:8px;background:var(--ln);border-radius:4px;overflow:hidden}.bar i s{display:block;height:100%}
+.bar em{width:26px;text-align:right;font-style:normal}
+button{font:inherit;background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:8px 11px;margin:3px 4px 3px 0;cursor:pointer}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac)}button.on{border-color:var(--ac);outline:2px solid var(--ac)}button.d{color:var(--r)}
+button:disabled{opacity:.45;cursor:default}.dim{opacity:.6}
+.log{max-height:260px;overflow-y:auto}.log p{margin:0 0 7px;font-size:14px}.t{color:var(--mut);font-size:12px}
+.ev{border-color:var(--ac)}.prog{height:6px;background:var(--ln);border-radius:4px;margin:6px 0;overflow:hidden}.prog s{display:block;height:100%;background:var(--ac)}
+.grid{display:grid;gap:10px}.c1{order:2}.c2{order:1}.c3{order:3}
+@media(min-width:860px){.grid{grid-template-columns:270px 1fr 260px}.c1,.c2,.c3{order:0}}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.money{margin-left:auto;font-weight:700;color:var(--g);font-size:17px}
+.ctl button{padding:6px 10px;font-size:14px}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 4px}.acts button{margin:0;padding:10px 4px;font-weight:600}
+.idh{font-size:12px;color:var(--ac);display:flex;justify-content:space-between}
+.kv{display:grid;grid-template-columns:56px 1fr;gap:3px 6px;margin:10px 0;font-size:14px}.kv span{color:var(--mut)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--ln);font-size:14px}
+.map{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-bottom:6px}.map i{aspect-ratio:1;background:var(--ln);border-radius:3px}.map i.dn{background:var(--g)}.map i.nw{outline:2px solid var(--ac)}
+.pg{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:6px 0}.pg b{width:50px;font-size:12px;color:var(--mut);font-weight:500}.pg button{padding:6px 9px;margin:0;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:3px 4px;text-align:right;border-bottom:1px solid var(--ln)}td:first-child,th:first-child{text-align:left}
+.rg{font-size:28px;font-weight:700}
+input,select{font:inherit;width:100%;padding:8px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx)}
+input[type=range]{padding:0}
+.fr{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0;align-items:center}.fr select,.fr input{flex:1;min-width:110px;width:auto}
+.sl{display:grid;grid-template-columns:44px 1fr 32px;align-items:center;gap:6px;margin:6px 0;font-size:13px}.sl span{color:var(--mut)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.md{background:var(--card);width:100%;max-width:560px;max-height:86vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+@media(min-width:700px){.ov{align-items:center}.md{border-radius:16px}}
+.mdh{display:flex;justify-content:space-between;align-items:center}.mdh h2{margin:0;font-size:17px}
+.item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--ln)}.item>div{flex:1}.item small{display:block;color:var(--mut);font-size:12px}.item button{margin:0;white-space:nowrap}
+.q{background:var(--bg);border-radius:8px;padding:8px 10px;margin:6px 0;font-weight:600}
+.cr{position:fixed;inset:0;z-index:30;background:#0b0f16;color:#eef0f3;display:flex;flex-direction:column;align-items:center;padding-top:env(safe-area-inset-top,0px)}
+.cr .sv{width:100%;max-width:560px;padding:12px}
+.cr .vw{flex:1;width:100%;max-width:560px;overflow:hidden;position:relative}
+.cr .rl{position:absolute;left:0;right:0;text-align:center;animation:rl 55s linear forwards;padding:0 16px}
+@keyframes rl{from{transform:translateY(60vh)}to{transform:translateY(-100%)}}
+.cr h2{font-size:26px;margin:0 0 6px;color:#fff}.cr h3{font-size:13px;letter-spacing:.2em;color:#e0607e;margin:44px 0 8px}.cr p{margin:3px 0;font-size:16px}
+.cr .bt{padding:12px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:8px}.cr .bt button{background:#1b2430;color:#fff;border-color:#334}
+</style></head><body>
+<div id="app"></div>
+<script>
+const R=Math.random,ri=(a,b)=>a+Math.floor(R()*(b-a+1)),cl=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
+const nrm=()=>{let u=0;for(let i=0;i<6;i++)u+=R();return(u-3)*1.41};
+const erf=x=>{const s=x<0?-1:1;x=Math.abs(x);const t=1/(1+.3275911*x);return s*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x))};
+const Phi=z=>.5*(1+erf(z/Math.SQRT2));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+const won=n=>Math.round(n).toLocaleString("ko-KR")+"원";
+const wpick=a=>{let x=R();for(const[v,p]of a){x-=p;if(x<=0)return v}return a[a.length-1][0]};
+const SN=["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","전"],GN=["민준","서연","지호","하윤","도현","수아","예준","지우","현우","서윤","주원","채원","건우","다은","승민","유진","태양","소연","시우","하린","준서","예린"];
+const H=["#2b2118","#3b2a1a","#171717","#5a3a22"],SK=["#f1c9a5","#e8b98d","#d9a577"];
+const GF=["서연","하윤","수아","지우","서윤","채원","다은","유진","소연","하린","예린","지아","수빈","나연"],GM=["민준","지호","도현","예준","현우","주원","건우","승민","태양","시우","준서","지훈","태민","재윤"];
+const TR=[["불면증",.05],["ADHD",.04],["자폐",.025],["반사회적",.02],["우울증",.04],["유당불내증",.12],["비염",.18],["과민성대장증후군",.05],["천식",.03],["잘생김",.04],["못생김",.04],["게임중독",.04],["양아치",.02],["유학파",.02]];
+const genTr=()=>{let t=TR.filter(x=>R()<x[1]).map(x=>x[0]);if(t.includes("잘생김")&&t.includes("못생김"))t=t.filter(x=>x!="못생김");return t.slice(0,2)};
+const SV=["서면사과","교내봉사","사회봉사","출석정지","강제전학"],REC=[1,.7,.45,.25,.12,.05];
+const CLUBS=["알케미아","가온누리","사향회","엄마손파이","지리어스","지어올림","농구부","배드민턴부","KMF","비즈쿨","메시아","멘토스","환경기자단","에브라임"];
+const CD={"알케미아":"화학·화장품","가온누리":"간호","사향회":"독서토론","엄마손파이":"수어","지리어스":"지리·사회","지어올림":"건축","농구부":"농구","배드민턴부":"배드민턴","KMF":"청소·환경","비즈쿨":"창업","메시아":"수학","멘토스":"멘토·멘티","환경기자단":"환경","에브라임":"기독교"};
+const CE={"알케미아":{int:2,setk:5,K:.5},"가온누리":{setk:4,mind:3},"사향회":{setk:4,int:1,rel:2},"엄마손파이":{setk:3,rel:4},"지리어스":{setk:4,rel:2},"지어올림":{setk:4,look:1,rel:2},"농구부":{body:5,rel:3},"배드민턴부":{body:4,rel:3},"KMF":{setk:3,mind:3,rel:2},"비즈쿨":{setk:4,rel:3,money:30000},"메시아":{int:2,K:1.5,setk:4},"멘토스":{setk:4,rel:3,int:1},"환경기자단":{setk:4,mind:2,rel:2},"에브라임":{mind:4,rel:3,setk:2}};
+const CQ={"알케미아":[
+["0.1 M CH₃COOH(Ka=1.8×10⁻⁵)의 pH에 가장 가까운 값은?",["1.0","2.9","4.7","5.5"],1],
+["다음 중 중심 원자가 sp³ 혼성이 아닌 것은?",["BF₃의 B","NH₃의 N","CH₄의 C","H₂O의 O"],0],
+["N₂+3H₂⇌2NH₃ (ΔH<0)에서 온도를 높이면 평형은?",["정반응 쪽","역반응 쪽","이동 없음","K가 커짐"],1]],
+"가온누리":[["성인 심폐소생술 가슴압박 깊이는 약 몇 cm?",["1~2","5~6","10","15"],1]],
+"사향회":[["토론에서 반론할 때 가장 좋은 태도는?",["목소리를 높인다","근거를 들어 약점을 짚는다","상대를 비웃는다","주제를 바꾼다"],1]],
+"엄마손파이":[["수어에서 문법 역할도 하는 손 외의 요소는?",["표정","냄새","온도","소리"],0]],
+"지리어스":[["구미시가 속한 도는?",["경상남도","경상북도","충청북도","전라북도"],1]],
+"지어올림":[["건축 도면에서 평면도는 어떻게 그린 것인가?",["옆에서 본 모습","수평으로 자른 위에서 본 모습","뒤에서 본 모습","3D 투시"],1]],
+"농구부":[["농구에서 한 팀이 코트에 서는 선수 수는?",["4","5","6","7"],1]],
+"배드민턴부":[["배드민턴 서브 때 셔틀콕은 허리 어디에서 쳐야 하나?",["위","아래","옆","상관없다"],1]],
+"KMF":[["페트병을 분리배출할 때 알맞은 방법은?",["라벨 떼고 헹궈 압축","그대로 일반쓰레기","뚜껑만 버림","태워 버림"],0]],
+"비즈쿨":[["창업 아이디어를 평가할 때 가장 먼저 볼 것은?",["고객의 문제와 수요","로고 색깔","사무실 크기","유행어"],0]],
+"메시아":[["x²-5x+6=0의 두 근의 합은?",["5","6","-5","1"],0]],"멘토스":[["멘티가 모르는 문제를 물어볼 때 좋은 멘토의 태도는?",["정답만 알려 준다","스스로 생각하게 단서를 준다","귀찮아한다","다른 사람에게 미룬다"],1]],"환경기자단":[["기사를 쓸 때 가장 중요한 것은?",["사실 확인","자극적 제목","긴 글","유행어"],0]],"에브라임":[["성경에서 에브라임은 누구의 아들일까?",["요셉","모세","다윗","아브라함"],0]]};
+const sp=(t,l,c,f,l2,f2)=>({t,c:[[l+" ("+won(c)+")",Object.assign({cost:c},f)],[l2,f2||{}]]});
+const SPD=[
+sp("휴대폰 액정이 깨졌다.","수리한다",120000,{mind:3},"그냥 쓴다",{mind:-4}),
+sp("이어폰을 어딘가에 흘렸다.","새로 산다",50000,{mind:2},"포기한다",{mind:-2}),
+sp("체육복을 잃어버렸다.","새로 산다",40000,{},"친구에게 빌려 입는다",{rel:-1}),
+sp("반티·학급비를 걷는다.","낸다",20000,{rel:3},"버틴다",{rel:-3}),
+sp("친구들이 마라탕을 먹으러 가자고 한다.","같이 간다",15000,{rel:4,mind:3},"사양한다",{rel:-1}),
+sp("인형뽑기 앞에서 눈이 마주쳤다.","도전한다",10000,{mind:4},"지나친다",{}),
+sp("야식이 너무 당긴다.","치킨을 시킨다",20000,{mind:5,body:-1},"참는다",{body:1}),
+sp("EBS 교재가 필요하다.","산다",20000,{K:1.5},"친구 것을 본다",{K:.5}),
+sp("독서실 한 달권 할인 행사 중이다.","끊는다",80000,{K:2,body:-1},"집에서 한다",{}),
+sp("자전거 바퀴에 펑크가 났다.","수리한다",15000,{},"끌고 간다",{body:-2,mind:-2}),
+sp("안경이 부러졌다.","새로 맞춘다",150000,{look:1},"테이프로 버틴다",{look:-3,mind:-2}),
+sp("친구 생일 케이크 모금을 한다.","낸다",10000,{rel:4},"안 낸다",{rel:-3}),
+sp("막차를 놓쳤다. 택시를 타야 한다.","택시를 탄다",25000,{body:1},"걸어간다",{body:-3,mind:-2}),
+sp("머리가 많이 자랐다. 미용실에 갈까?","간다",20000,{look:4},"그냥 둔다",{look:-1}),
+sp("교복이 얼룩졌다.","세탁소에 맡긴다",10000,{mind:2},"그냥 입는다",{look:-2}),
+sp("서점에 좋아하는 작가의 신간이 나왔다.","산다",15000,{mind:4,setk:1},"도서관에서 빌린다",{}),
+sp("코인노래방 앞을 지나간다.","들어간다",10000,{mind:6,rel:2},"지나간다",{}),
+sp("학교 고양이가 다리를 절뚝인다. 동물병원에 데려가야 한다.","병원비를 낸다",100000,{mind:8,cat:1},"보건 선생님께 맡긴다",{mind:-3}),
+sp("중고거래 앱에 갖고 싶던 물건이 올라왔다.","산다",60000,{mind:5},"참는다",{}),
+sp("수행평가 준비물을 급히 사야 한다.","문구점에서 산다",30000,{setk:2},"대충 만들어 간다",{setk:-2})];
+function clubEv(){const oc=CL.filter(x=>x.o!==S.name).slice(0,10).map(x=>[x.n+" — "+(MC[x.cat]?MC[x.cat][0]:"")+" · 만든이 "+x.o,{joinn:x.n,joinc:x.cat||0}]);return{t:"동아리 모집 기간이다. 어디에 지원할까? (면접이 있다)"+(oc.length?" 다른 학생이 만든 동아리도 있다.":""),c:CLUBS.map(n=>[n+" — "+CD[n],{tryc:n}]).concat(oc,[["안 들어간다",{K:1,rel:-1}]])}}
+const MC=[["언어",["영어","일본어","중국어","스페인어","프랑스어","독일어","러시아어","아랍어","이탈리아어","포르투갈어","베트남어","태국어","인도네시아어","힌디어","튀르키예어","라틴어","그리스어","에스페란토","수어","한국어"]],["과학",["물리실험","화학실험","생명과학","지구과학","천문관측","로봇","드론","환경과학","코딩·AI","의학·약학"]],["사회",["한국사","세계사","한국지리","세계지리","정치와법","경제","사회문화","생활과윤리","윤리와사상","동아시아사"]],["운동",["축구","야구","배구","탁구","테니스","수영","육상","클라이밍","태권도","줄넘기"]],["아무도 필요 없는",["멍때리기부","낮잠부","컵라면 연구부","구름 관찰부","돌멩이 수집부","한숨부","책상 낙서부","그림자 밟기부","지우개 따먹기부","빈 교실 순례부"]],["종교",["개신교","천주교","불교","원불교","유교","이슬람교","힌두교","유대교","천도교","종교학 탐구"]]];
+const CEC=[{rel:3,setk:4,int:1},{setk:5,int:2},{setk:5,rel:2},{body:5,rel:3},{mind:6,rel:2},{mind:5,rel:3,setk:2}];
+let CL=[];
+function mkcHTML(){const m=S.mc,L=MC[m.cat][1];return'<div class="mdh"><h2>동아리 만들기</h2><button onclick="S.modal=null;render()">닫기</button></div><div class="fr"><input id="cn" placeholder="동아리 이름 (비우면 자동)" maxlength="10" value="'+esc(m.n)+'" onchange="S.mc.n=this.value.trim()"></div><div class="pg"><b>분류</b>'+MC.map((c,i)=>'<button class="'+(m.cat==i?"on":"")+'" onclick="S.mc.n=document.getElementById(\'cn\').value.trim();S.mc.cat='+i+';S.mc.sub=0;render()">'+c[0]+'</button>').join("")+'</div><div class="pg"><b>종류</b>'+L.map((x,i)=>'<button class="'+(m.sub==i?"on":"")+'" onclick="S.mc.n=document.getElementById(\'cn\').value.trim();S.mc.sub='+i+';render()">'+x+'</button>').join("")+'</div><div class="mut">'+(S.club?"기존 동아리 ("+S.club+")는 탈퇴하게 돼요.":"")+'</div><button class="p" onclick="mkDone()">동아리 창설</button>'}
+function mkDone(){const m=S.mc,L=MC[m.cat][1],n=m.n||L[m.sub]+(m.cat==4?"":m.cat==5?" 모임":"부");S.club=n;if(DB&&UID)MYCL={n,cat:m.cat,sub:L[m.sub],o:S.name};ap(CEC[m.cat]);S.cc={cat:m.cat,sub:L[m.sub]};if(DB&&UID)pubClub();say("["+MC[m.cat][0]+"] 새 동아리 '"+n+"'을(를) 만들었다!");S.modal=null;render()}
+let AC=null,mus=0,mt=null,mst=0,mpos=2;
+const MM={spring:{n:"봄",bpm:112,sc:[0,2,4,7,9],root:60,w:"triangle"},summer:{n:"여름",bpm:128,sc:[0,2,4,7,9],root:64,w:"square"},autumn:{n:"가을",bpm:84,sc:[0,2,3,7,8],root:57,w:"triangle"},winter:{n:"겨울",bpm:70,sc:[0,2,4,7,11],root:62,w:"sine"},exam:{n:"시험",bpm:140,sc:[0,1,3,6,7],root:55,w:"sawtooth"},fest:{n:"축제",bpm:150,sc:[0,2,4,7,9],root:67,w:"square"},sad:{n:"우울",bpm:60,sc:[0,3,5,7,10],root:52,w:"sine"},home:{n:"집",bpm:76,sc:[0,2,4,7,9],root:57,w:"sine"},menu:{n:"입학",bpm:100,sc:[0,2,4,7,9],root:60,w:"triangle"},end:{n:"엔딩",bpm:66,sc:[0,2,4,7,9],root:62,w:"sine"}};
+function mood(){if(!S||!S.started)return"menu";if(S.done)return"end";const d=D(S.w),m=d.getMonth()+1,kk=key(d);if(S.bully||S.st.mind<30)return"sad";if(m==10&&d.getDate()>=25&&!S.drop)return"fest";if(!S.drop&&(NAE[kk]||mokName(kk,grade(d))))return"exam";if(S.drop)return"home";return m>=3&&m<=5?"spring":m>=6&&m<=8?"summer":m>=9&&m<=11?"autumn":"winter"}
+function mnote(n,t,d,w,v){const o=AC.createOscillator(),g=AC.createGain();o.type=w;o.frequency.value=440*Math.pow(2,(n-69)/12);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.05)}
+const SONG={bpm:100,root:60,mel:[0,4,7,9,7,4,2,4,0,2,4,7,12,9,7,4,5,9,12,9,7,5,4,2,0,4,7,4,2,"r",0,"r"],bass:[0,0,-3,-3,5,5,-5,-5]};
+function mstep(){if(!mus||!AC)return;const t=AC.currentTime+.05,b=60/SONG.bpm/2,n=SONG.mel[mst%SONG.mel.length];
+ if(n!=="r")mnote(SONG.root+n,t,b*1.6,"triangle",.045);
+ if(mst%4==0)mnote(SONG.root-12+SONG.bass[(mst>>2)%8],t,b*3.5,"sine",.06);
+ mst++;mt=setTimeout(mstep,b*1000)}
+function musOn(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume();clearTimeout(mt);mus=1;mstep()}catch(e){mus=0}}
+function musToggle(){if(mus){mus=0;clearTimeout(mt)}else musOn();render()}
+let RM=null,DB=null,UID=null,peers=[],hall=[],feed=[],HS=false,lp="";
+function srchU(v){S.qu=v.trim();const k=UNIV.findIndex(u=>u[0].includes(S.qu));if(k>=0)S.fm.u=k;render()}
+function srchM(v){S.qm=v.trim();const k=M.findIndex(n=>n.includes(S.qm));if(k>=0)S.fm.m=k;render()}
+function softR(){if(S&&!S.modal&&!S.phase&&!document.querySelector("input:focus"))render()}
+function pres(){if(!RM||!S)return;const p={n:S.name,tr:S.tr.join(","),c:S.club||"",m:Math.round(S.st.mind),s:S.started?(S.drop?"자퇴생":"고"+grade(D(S.w)))+(S.done?" · 졸업":""):"입학 전"},j=JSON.stringify(p);if(j!=lp){lp=j;RM.presence(p).catch(()=>{})}}
+function netCard(){let h='';
+ if(RM){const ps=peers.filter(p=>!p.isMe);h+='<div class="card"><h2>지금 접속 중 ('+ps.length+')</h2>'+(ps.length?ps.map(p=>'<div class="row"><span>'+esc(p.presence.n||"익명")+'</span><span class="mut">'+esc(p.presence.s||"")+'</span></div>').join(""):'<div class="mut">지금은 나 혼자예요. 링크를 공유해 같이 접속해 보세요.</div>')+(feed.length?'<div class="mut" style="margin-top:6px">학교 방송</div>'+feed.map(x=>'<div class="t">'+esc(x)+'</div>').join(""):'')+'</div>'}
+ if(DB&&UID)h+='<div class="card"><h2>명예의 전당</h2>'+(hall.length?'<div style="max-height:280px;overflow:auto">'+hall.map((x,i)=>'<div class="row"><span>'+(i+1)+'. '+esc(x.n)+'<br><span class="mut">'+esc(x.r)+' · 내신 '+esc(x.nae)+'등급</span></span></div>').join("")+'</div>':'<div class="mut">아직 졸업생이 없어요.</div>')+'</div>';
+ return h}
+async function netInit(){
+ try{const r=await window.claude.use("room");if(r){RM=r;r.onPeers(()=>{peers=r.peers();softR()});r.on("news",m=>{if(!m.isMe&&m.data&&m.data.x){feed.unshift(String(m.data.x).slice(0,80));feed.length=Math.min(feed.length,6);softR()}});pres()}}catch(e){}
+ try{const u=await window.claude.use("user");if(u)UID=await u.id()}catch(e){}
+ try{const d=await window.claude.use("db");if(d&&UID){DB=d;d.collection("hall").orderBy("rk").limit(50).onSnapshot(q=>{hall=q.docs.map(x=>x.data());softR()},()=>{});d.collection("clubs").orderBy("t","desc").limit(30).onSnapshot(q=>{CL=q.docs.map(x=>x.data())},()=>{});const g=await d.doc("data/users/"+UID+"/save").get();HS=g.exists;softR();try{const x=localStorage.getItem("dgk");if(x&&!MYCL){MYCL=JSON.parse(x)}if(MYCL)pubClub()}catch(e){}}}catch(e){}}
+async function saveHall(){if(!DB||!UID||!S.hall)return;try{const r=DB.doc("hall/"+UID),o=await r.get();if(!o.exists||o.data().rk>S.hall.rk)await r.set(Object.assign({},S.hall,{t:Date.now()}))}catch(e){}}
+async function saveGame(){try{await DB.doc("data/users/"+UID+"/save").set({j:JSON.stringify(S),t:Date.now()});HS=true;say("게임을 저장했다.")}catch(e){say("저장에 실패했다.")}render()}
+async function loadGame(){try{const g=await DB.doc("data/users/"+UID+"/save").get();S=JSON.parse(g.data().j);S.modal=null;paused=false;prog=0}catch(e){}render()}
+const TRIPEV={sg:[sp("마리나베이에서 야경을 볼 수 있다.","야경 투어",30000,{mind:6},"숙소에서 쉰다",{mind:1}),sp("호커센터에서 현지 음식을 먹는다.","먹는다",15000,{mind:4,rel:1},"호텔식으로 해결",{}),{t:"현지 학교 학생이 말을 건다.",c:[["영어로 대화한다",{rel:3,K:.5,setk:1}],["어색해서 피한다",{mind:-1}]]}],de:[sp("시장에서 소시지와 프레첼을 판다.","사 먹는다",20000,{mind:5},"구경만 한다",{mind:1}),sp("베를린 장벽 박물관에 간다.","입장한다",25000,{setk:2,mind:3},"자유 시간을 보낸다",{mind:2}),{t:"현지 학교 학생이 말을 건다.",c:[["영어로 대화한다",{rel:3,K:.5,setk:1}],["어색해서 피한다",{mind:-1}]]}]};
+function tripBg(c){return c=="sg"?'<rect width="240" height="100" fill="#8fd6f2"/><rect y="66" width="240" height="34" fill="#3f8fc4"/><rect x="40" y="26" width="10" height="46" fill="#cbd3dc"/><rect x="58" y="26" width="10" height="46" fill="#cbd3dc"/><rect x="76" y="26" width="10" height="46" fill="#cbd3dc"/><rect x="34" y="20" width="58" height="6" fill="#e8ecf0"/><text x="63" y="14" font-size="6" fill="#fff" text-anchor="middle">Marina Bay · 싱가포르</text><rect x="140" y="46" width="14" height="26" fill="#e9eef3"/><rect x="144" y="38" width="6" height="8" fill="#e9eef3"/><rect x="176" y="30" width="3" height="42" fill="#7a5a3a"/><rect x="168" y="26" width="19" height="4" fill="#2f8f4f"/>':'<rect width="240" height="100" fill="#cfe0ee"/><rect x="40" y="26" width="100" height="4" fill="#b8a780"/><rect x="40" y="30" width="100" height="6" fill="#d8c9a8"/>'+[0,1,2,3,4,5].map(i=>'<rect x="'+(46+i*16)+'" y="36" width="6" height="38" fill="#d8c9a8"/>').join("")+'<text x="90" y="20" font-size="6" fill="#444" text-anchor="middle">Berlin · 독일</text><rect x="160" y="42" width="30" height="32" fill="#c06a4a"/><polygon points="156,42 175,24 194,42" fill="#6a3a2a"/><rect x="200" y="50" width="26" height="24" fill="#e8d9b0"/><polygon points="198,50 213,36 228,50" fill="#8a4a3a"/>'}
+const CACT={"알케미아":["화장품 만들기·산염기 적정 실험을 하는 날이다.","실험에 참여한다",{setk:3,int:.5,K:.3}],"가온누리":["심폐소생술 실습과 보건 봉사 활동이다.","실습한다",{setk:3,rel:1,mind:1}],"사향회":["독서토론 시간이다. 이번 책은 꽤 두껍다.","토론에 참여한다",{setk:3,K:.4,rel:1}],"엄마손파이":["수어 공연 연습 시간이다.","연습한다",{setk:2,rel:3}],"지리어스":["지리 답사 활동이다. 지도를 들고 마을을 돈다.","답사한다",{setk:3,body:-1,mind:2}],"지어올림":["건축 모형 제작 활동이다.","만든다",{setk:3,int:.3,mind:1}],"농구부":["교내 연습경기가 열린다.","뛴다",{body:3,rel:3,mind:2}],"배드민턴부":["배드민턴 복식 연습 시간이다.","연습한다",{body:3,rel:2,mind:2}],"KMF":["교내 환경 정화와 청소 봉사 활동이다.","청소한다",{setk:2,rel:2,body:-1}],"비즈쿨":["창업 아이디어 발표와 교내 장터 준비를 한다.","발표·준비한다",{setk:3,rel:2,money:20000}],"메시아":["수학 문제 제작·퀴즈 활동이다.","문제를 만든다",{setk:3,K:.6,int:.4}],"멘토스":["멘토·멘티 멘토링 시간이다.","멘토링한다",{setk:3,rel:3,K:.3}],"환경기자단":["환경 기사 취재와 인터뷰 활동이다.","취재한다",{setk:3,rel:1,mind:1}],"에브라임":["에브라임의 예배·성경 나눔 모임이 있다.","참여한다",{mind:5,rel:3,setk:1}]};
+const CCAT=[sb=>[sb+" 회화 연습 시간이다.","연습한다",{setk:2,K:.4,rel:1}],sb=>[sb+" 실험·탐구 활동 시간이다.","실험한다",{setk:2,int:.5}],sb=>[sb+" 주제 토론·탐구 활동이다.","참여한다",{setk:2,rel:1,K:.3}],sb=>[sb+" 연습경기를 한다.","뛴다",{body:3,rel:2}],sb=>[sb+" 활동에 열중한다. 아무에게도 도움이 안 되지만 즐겁다.","열중한다",{mind:5,rel:1}],sb=>[sb+" 모임에서 이야기를 나눈다.","참여한다",{mind:4,rel:2}]];
+function clubAct(){const n=S.club;let a=CACT[n];if(!a){const k=S.cc&&S.cc.cat!=null?S.cc.cat:0;a=CCAT[k](S.cc&&S.cc.sub||n)}return{t:"["+n+"] "+a[0],c:[[a[1],Object.assign({msg:n+" 활동에 참여했다."},a[2])],["빠진다",{mind:1,rel:-1}]]}}
+let MYCL=null;
+function pubClub(){try{if(!MYCL&&S.cc)MYCL={n:S.club,cat:S.cc.cat,sub:S.cc.sub,o:S.name};if(MYCL)try{localStorage.setItem("dgk",JSON.stringify(MYCL))}catch(e){}
+ if(DB&&UID&&MYCL)DB.doc("clubs/"+UID).set(Object.assign({},MYCL,{t:Date.now()})).catch(()=>{})}catch(e){}}
+const npcTr=()=>{const g=genTr();return g.length&&R()<.5?[g[0]]:[]};
+const TG=()=>S.plan.tg>0?S.plan.tg:(S.lt>0?S.lt:1);
+function tgW(P){if(P.tg>0)return P.tg;if(P.act!="date")return TG();const L=[1,2,3].filter(i=>S.cm[i].st<3);if(!L.length)return 1;let tot=0;const w=L.map(i=>{const c=S.cm[i],v=1+(c.fr==null?40:c.fr)/20+c.aff/25+(c.st==2?4:0);tot+=v;return v});let r=R()*tot,k=0;for(;k<L.length-1;k++){r-=w[k];if(r<=0)break}S.lt=L[k];return L[k]}
+function newFriend(i,why){const o=S.cm[i],n=mate(o.r,S.g=="남");n.fr=ri(40,55);S.cm[i]=n;say(why+" "+n.n+"와(과) 부쩍 친해졌다.")}
+function reshuffle(){let c=0;for(let i=1;i<=3;i++){const o=S.cm[i];if(o.st==2||(o.fr||40)>=65)continue;if(R()<.7){newFriend(i,"새 학년이 되어 반이 바뀌었다. "+o.n+"와(과)는 다른 반이 됐다.");c++}}if(!c)say("새 학년이 됐지만 친한 친구들과 같은 반이 됐다.")}
+function acaEv(){const L=["형곡동 학원가","옥계동 학원가","산동읍 학원","구미 인동 학원","과외 (선생님 댁)"],l=L[ri(0,4)];
+ return{t:"학원 상담을 받았다. 장소는 "+l+", 수강료는 주 "+won(l[0]=="과"?80000:40000)+"이다. 어떤 과목을 들을까?",c:["영어","수학","과학","사회"].map(x=>[x,{aca:x+"|"+l}]).concat([["안 한다",{}]])}}
+function ivNext(){const v=S.iv,q=CQ[v.n][v.i];return{t:"["+v.n+" 면접 "+(v.i+1)+"/"+CQ[v.n].length+"] "+(v.n=="알케미아"?"동아리장 이현준이 무표정하게 묻는다.":"동아리장이 묻는다.")+'<div class="q">'+q[0]+'</div>',c:q[1].map((o,i)=>[o,{iva:i==q[2]?1:0}])}}
+function acaRow(){return'<div class="pg"><b>학원</b>'+(S.aca?'<span class="mut">'+S.aca.s+' · '+S.aca.l+' · 주 '+won(S.aca.f)+'</span><button class="d" onclick="S.aca=null;say(\'학원을 끊었다.\');render()">끊기</button>':'<button onclick="S.modal=null;S.ev=S.ev||acaEv();render()">학원 알아보기</button>')+'</div>'}
+function tgT(n){const i=S.tr.indexOf(n);i<0?S.tr.push(n):S.tr.splice(i,1);if(n=="동성애")mkCm(S);render()}
+function wkExtra(m,sch,P){const has=t=>S.tr.includes(t);
+ S.cm.forEach((c,i)=>{if(i<1)return;if(c.fr==null)c.fr=40;c.fr=cl(c.fr+(P.act=="friend"?2.5:.3)+(S.st.rel-50)/300-(R()<.1?ri(2,6):0));if(c.st!=2&&c.fr<12&&R()<.5)newFriend(i,c.n+"와(과) 어느새 멀어졌다.");else if(c.st!=2&&R()<.008){c.fr=Math.max(5,c.fr-18);say(c.n+"와(과) 조금 멀어진 것 같다.")}});
+ const dd=D(S.w);if(S.w>8&&dd.getMonth()==2&&dd.getDate()<=7)reshuffle();
+ S.cm.forEach(c=>{if(c.tr&&(c.rv||0)<c.tr.length&&R()<.012+(c.fr||40)/5000+c.aff/3000){c.rv=(c.rv||0)+1;say(c.n+"에 대해 새로 알게 됐다: "+c.tr[c.rv-1])}if(c.ab){c.ab.body=cl(c.ab.body+ri(-2,2));c.ab.mind=cl(c.ab.mind+ri(-3,3));if(S.w%13==0)c.ab.gr=Math.min(9,Math.max(1,c.ab.gr+ri(-1,1)))}});
+ if(S.w%26==3){const c=S.cm[ri(1,3)];if(c){c.tr=c.tr||[];const nt=genTr()[0]||(c.tr.length&&R()<.3?c.tr[0]:null);if(!nt){}else if(c.tr.includes(nt)){c.tr=c.tr.filter(x=>x!=nt);say(c.n+"에게서 '"+nt+"' 기색이 사라진 것 같다.")}else{c.tr.push(nt);say(c.n+"에게서 '"+nt+"' 면이 새로 보인다.")}}}
+ if(has("불면증"))ap({mind:-1.2,body:-.4});
+ if(has("우울증"))ap({mind:-1.2});
+ if(has("자폐"))ap({rel:-.4});
+ if(has("ADHD"))ap({mind:-.3});
+ if(has("천식")){ap({body:-.4});if(P.act=="gym"&&R()<.25){ap({body:-3});say("운동 중 천식 증상이 와 흡입기를 썼다.")}}
+ if(has("비염")&&[3,4,5,9,10].includes(m))ap({mind:-.5});
+ if(has("유당불내증")&&R()<.1){ap({body:-2,mind:-1});say("급식 우유를 마시고 배가 아팠다. (유당불내증)")}
+ if(has("과민성대장증후군")&&R()<.1){ap({body:-2,mind:-1.5});say("긴장했더니 배가 아파 화장실로 달려갔다. (과민성대장증후군)")}
+ if(has("게임중독")&&R()<.3){ap({mind:2,K:-.8,body:-.5});S.money=Math.max(0,S.money-5000);say("밤새 게임을 했다. (게임중독)")}
+ if(has("반사회적")&&R()<.04){ap({rel:-3,mind:-1});say("정치 이야기로 친구와 언쟁을 벌였다.")}
+ if(S.aca&&!S.drop){if(S.money>=S.aca.f){S.money-=S.aca.f;S.K=cl(S.K+.5*Math.max(.05,1.1-S.K/72));ap({mind:-.4,setk:.05,body:/인동|형곡|옥계/.test(S.aca.l)?-.8:-.3})}else{say("학원비가 밀려 학원을 그만뒀다.");S.aca=null}}
+ if(S.ill){const I=S.ill;ap({body:I.n=="골절"?-1.5:-3,mind:-1.5});S.K=cl(S.K-.4);if(--I.wk<=0){say(I.n+"이(가) 다 나았다.");S.ill=null}}
+ else if(R()<.025+(P.act=="gym"?.01:0)+Math.max(0,45-S.st.body)/2500){const x=[["독감",2,"mask"],["코로나",2,"mask"],["골절",5,"cast"],["염좌",2,"cast"]][ri(0,3)],c=x[0]=="골절"?Math.min(S.money,50000):0;S.money-=c;S.ill={n:x[0],wk:x[1],t:x[2]};say(x[0]+"에 걸렸다. "+(x[2]=="mask"?"마스크를 썼다.":"붕대를 감았다.")+(c?" 병원비 "+won(c)+".":""))}}
+const mate0=1;
+const GN0=1;
+const MS=[["옥계중",15,"구미 옥계","far"],["산동중",20,"산동읍","bus"],["고아중",20,"고아읍","bus"],["선산중",15,"선산읍","bus"],["도개중",5,"도개면","walk"],["해평중",3,"해평면","bus"],["무을중",2,"무을면","bus"],["형곡중",2,"구미 형곡동","far"],["인동중",2,"구미 인동","far"],["금오중",2,"구미 시내","far"],["삼성중",3,"구미 삼성","far"],["장천중",2,"장천면","bus"],["진평중",1,"구미 진평동","far"],["송정중",1,"구미 송정동","far"],["원평중",1,"구미 원평동","far"],["도량중",1,"구미 도량동","far"],["상모중",1,"구미 상모동","far"],["양포중",1,"구미 양포동","far"],["사곡중",1,"구미 사곡동","far"],["신평중",1,"구미 신평동","far"],["의성중",2,"의성읍","bus"],["안계중",1,"의성 안계면","far"]];
+const CT={walk:"도보 통학",bus:"통학버스",far:"먼 거리 · 통학 어려움"};
+const ALW=[[10000,.25],[30000,.45],[50000,.22],[100000,.08]];
+const MENU=["친환경발아현미밥","감자수제비국","콩나물양념어묵","미역줄기청양고추볶음","숯불갈비맛오리불고기","배추김치"];
+const UNIV=[["서울대",1.2],["KAIST",2,"s"],["POSTECH",2.2,"s"],["연세대",2.4],["고려대",2.7],["성균관대",3.6],["한양대",4.2],["서강대",4.8],["중앙대",6.5],["경희대",7],["한국외대",8],["서울시립대",7.5],["이화여대",8.5,"f"],["건국대",10],["동국대",10.5],["홍익대",11.5],["아주대",12],["인하대",12.5],["국민대",15],["경북대",12],["부산대",11],["전남대",19],["충남대",18],["금오공대",30],["영남대",28],["계명대",35],["대구가톨릭대",45],["대구대",50],["경일대",60],["구미대",80],["숙명여대",9.5,"f"],["성신여대",16,"f"],["서울여대",28,"f"],["동덕여대",30,"f"],["서울과기대",14],["세종대",14],["단국대",17],["광운대",17],["명지대",22],["상명대",30],["숭실대",15],["가천대",18],["인천대",20],["한국항공대",17],["가톨릭대",20],["한림대",30],["DGIST",2.6,"s"],["GIST",3,"s"],["UNIST",2.8,"s"],["경상국립대",22],["전북대",20],["강원대",24],["충북대",24],["제주대",30],["울산대",26],["부경대",28],["동아대",36],["한동대",30],["안동대",40],["대구교대",12],["서울교대",10],["부산교대",14],["춘천교대",20],["한국체대",22],["순천향대",40],["대구한의대",55]];
+const M=[],MH=[];
+[[3,"의예과,치의예과,한의예과,수의예과,약학과,컴퓨터공학과"],[2,"반도체공학과,전기전자공학부,기계공학과,화학공학과,신소재공학과,건축학과,간호학과,경영학과,경제학과,법학과,행정학과,심리학과,교육학과,초등교육과,국어교육과,영어교육과,수학교육과,화학교육과,물리교육과,생명과학과,화학과,물리학과,수학과,통계학과,미디어커뮤니케이션학과,국제통상학과,정치외교학과,사회학과,사학과,철학과,영어영문학과,국어국문학과,산업공학과,토목공학과"],[1,"환경공학과,식품공학과,식품영양학과,생명공학과,응용화학과,에너지공학과,항공우주공학과,자동차공학과,조선해양공학과,소프트웨어학과,인공지능학과,데이터사이언스학과,정보보안학과,도시공학과,지리학과,사회복지학과,아동가족학과,유아교육과,특수교육과,체육교육과,스포츠과학과,무용학과,음악학과,미술학과,디자인학과,시각디자인학과,산업디자인학과,패션디자인학과,문헌정보학과,관광경영학과,호텔경영학과,회계학과,무역학과,금융학과,부동산학과,광고홍보학과"],[0,"보건행정학과,임상병리학과,물리치료학과,방사선학과,치위생학과,작업치료학과,응급구조학과,간호보건학과,농업생명과학과,산림학과,원예학과,동물자원학과,조리학과,제과제빵학과,뷰티케어학과,항공서비스학과,경찰행정학과,소방안전학과,군사학과,사이버국방학과,스마트팜학과,바이오제약학과,화장품공학과,전기공학과"]].forEach(([h,s])=>s.split(",").forEach(n=>{M.push(n);MH.push(h)}));
+const DN=["브라운","핑크","블루","레드","애쉬"],DY=["#d8a24a","#d0609a","#3b82c4","#c0392b","#9aa0aa"];
+const TY=["학종","교과","정시"],AN={study:"공부",gym:"운동",friend:"친구",date:"연애",rest:"휴식"},MEAL=["규칙적","편식","매점·배달","다이어트"];
+const SHOP=[
+ ["snack","편의점 간식",3000,"멘탈 +3",{mind:3},0],
+ ["pc","PC방 2시간",5000,"멘탈 +3 · 실력 조금 ↓",{mind:3,K:-.3},0],
+ ["sing","친구들과 노래방",10000,"관계 +3 · 멘탈 +3",{rel:3,mind:3},0],
+ ["book","문제집",15000,"실력 +1.5",{K:1.5},0],
+ ["vit","영양제",20000,"체력 +4",{body:4},0],
+ ["gift","선물",20000,"연애 대상 호감 +8 (대상은 계획 › 연애에서 변경)",null,0],
+ ["ing","인강 1년 패스",50000,"공부 효율 +12% (영구)",null,1],
+ ["mk","화장품 세트",25000,"화장 가능 · 외모 +5 · 단속 위험",null,1],
+ ["dye","염색약",15000,"염색 가능 · 외모 +5 · 단속 위험",null,1],
+ ["tune","교복 수선",30000,"교복 튜닝 가능 · 외모 +4 · 단속 위험",null,1],
+ ["perf","향수",30000,"외모 +2",{look:2},1],
+ ["shoe","운동화",80000,"외모 +2 · 체력 +2",{look:2,body:2},1]];
+const ENG=[
+ ["She ___ to school every day.",["go","goes","going","gone"],1],
+ ["I have lived here ___ 2020.",["for","since","during","from"],1],
+ ["If I ___ rich, I would buy a car.",["am","were","will be","been"],1],
+ ["The book ___ I read yesterday was boring.",["who","which","what","whose"],1],
+ ["He is used to ___ up early.",["get","got","getting","gets"],2],
+ ["This is the house ___ I was born.",["which","where","what","who"],1],
+ ["Neither Tom nor his friends ___ there.",["was","were","is","be"],1],
+ ["I'm looking forward to ___ you.",["see","seeing","saw","seen"],1],
+ ["She made me ___ the room.",["clean","to clean","cleaning","cleaned"],0],
+ ["___ tired, he went to bed early.",["Feel","Feeling","Felt","To feeling"],1],
+ ["I wish I ___ fly.",["can","could","will","may"],1],
+ ["He stopped ___ because it was bad for his health.",["smoke","to smoke","smoking","smoked"],2],
+ ["The number of students ___ increasing.",["is","are","be","were"],0],
+ ["What ___ you do if you won the lottery?",["will","would","do","did"],1],
+ ["By the time she arrived, the movie ___.",["started","has started","had started","starts"],2],
+ ["This problem is too difficult ___ me to solve.",["of","to","for","with"],2],
+ ["Not only ___ he smart, but he is also kind.",["is","does","was being","are"],0],
+ ["I don't know ___ he will come.",["that","whether","what","which"],1],
+ ["Every student ___ a laptop.",["have","has","having","are have"],1],
+ ["She is the ___ of the three sisters.",["tall","taller","tallest","more tall"],2],
+ ["The window was broken ___ the boy.",["by","with","from","of"],0],
+ ["It ___ raining since this morning.",["is","was","has been","have been"],2]];
+const EVS=[
+ {t:()=>"오늘 급식은 "+MENU[ri(0,4)]+"이다. 은근히 기대된다.",c:[["싹싹 비운다",{body:2,mind:2}],["남기고 매점에 간다 (2천원)",{cost:2000,mind:2,body:-1}]]},
+ {t:"하교길, 도개초 옆 CU 앞에 친구들이 모여 있다.",c:[["같이 컵라면 먹는다 (2천원)",{cost:2000,rel:4,mind:2,K:-.3}],["그냥 집에 간다",{K:.5}]]},
+ {t:"늦잠을 잤다. 통학버스를 놓칠 것 같다!",w:()=>!S.dorm&&S.ct!="walk",c:[["뛴다",{body:2,mind:-2}],["부모님께 태워 달라고 한다",{mind:-1,rel:-1}]]},
+ {t:"낙동강 둑길을 걸으니 머리가 맑아진다.",c:[["걸으며 단어 외우기",{K:1.5,mind:2}],["멍때리기",{mind:5}]]},
+ {t:"도개중앙교회 친구가 청소년부에 같이 가자고 한다.",c:[["가 본다",{rel:5,mind:2}],["거절한다",{K:.5}]]},
+ {t:"감기 기운이 있다. 도개보건지소가 학교 바로 옆이다.",c:[["진료받고 쉰다",{body:3,mind:1}],["참고 버틴다",{K:1,body:-4}]]},
+  {t:"담임이 진로 상담을 하자고 부른다.",c:[["진지하게 상담",{K:1,setk:2,mind:2}],["대충 대답",{mind:1}]]},
+ {t:"숏폼을 보다 보니 새벽 두 시다.",c:[["계속 본다",{mind:3,K:-1.5,body:-3}],["끄고 잔다",{body:2}]]},
+ {t:"구미 인동 학원 설명회 문자가 왔다. 도개에서 버스로 한참이다.",c:[["등록한다",{K:3,body:-3,mind:-2}],["인강으로 버틴다",{K:1.5}],["안 한다",{mind:2}]]},
+ {t:"시험 전날인데 범위의 반도 못 봤다.",c:[["밤샌다",{K:1.5,body:-4,mind:-2}],["포기하고 잔다",{body:2,mind:1}]]},
+ {t:"친구가 수행평가 숙제를 보여 달라고 한다.",c:[["보여 준다",{rel:3}],["거절한다",{rel:-2}]]},
+ {t:"조별 수행평가에서 한 명이 아무것도 안 한다.",c:[["혼자 다 한다",{setk:3,mind:-3}],["선생님께 말한다",{rel:-2,setk:1}],["다 같이 대충 한다",{rel:1,setk:-1}]]},
+ {t:"비가 쏟아지는데 우산이 없다.",c:[["비 맞고 뛴다",{body:-2,mind:-1}],["편의점 우산 산다 (5천원)",{cost:5000}],["친구 우산 같이 쓴다",{rel:3}]]},
+ {t:()=>"오늘은 "+S.cm[ri(1,3)].n+"의 생일이다.",c:[["선물 산다 (2만원)",{cost:20000,rel:6}],["축하 메시지만 보낸다",{rel:1}]]},
+ {t:"학교 축제 무대 참가자를 모집한다.",c:[["무대에 선다",{look:2,rel:5,mind:3}],["구경만 한다",{mind:2}]]},
+ {t:"반 단톡방에서 누군가를 뒷담화하고 있다.",c:[["동조한다",{rel:1,mind:-2}],["그만하라고 한다",{rel:-1,mind:2}],["조용히 나간다",{rel:-2}]]},
+ {t:"복도에서 지갑을 주웠다. 현금 2만원이 들어 있다.",c:[["교무실에 맡긴다",{mind:3,rel:1,msg:"주인이 고맙다며 음료수를 사 줬다."}],["현금만 챙긴다",{money:20000,mind:-5,msg:"2만원을 챙겼다. 마음이 영 불편하다."}]]},
+ {t:"매점에 신메뉴 치즈 핫도그가 나왔다.",c:[["사 먹는다 (3천원)",{cost:3000,mind:3}],["참는다",{}]]},
+ {t:"수업 시간에 탐구 발표 기회가 생겼다. 세특에 들어갈 수 있다.",c:[["주제를 깊게 파서 발표",{setk:6,mind:-2,K:.5}],["무난하게 한다",{setk:2}]]},
+ {t:"독서 활동 보고서를 써야 한다.",c:[["희망 전공 관련 책을 읽는다",{setk:4,int:1}],["줄거리만 쓴다",{setk:1}]]},
+ {t:"교내 과학탐구대회 공고가 붙었다.",c:[["나간다",{setk:5,K:.5,body:-1}],["안 나간다",{}]]},
+ {t:"학생회 선거 출마자를 받는다.",c:[["출마한다",{rel:4,setk:3,mind:-2}],["투표만 한다",{}]]},
+ {t:"친구가 2만원만 빌려 달라고 한다.",c:[["빌려준다 (2만원)",{cost:20000,rel:4}],["거절한다",{rel:-2}]]},
+ {t:"주말 편의점 알바 자리가 났다.",c:[["한다 (+6만원)",{money:60000,body:-3,K:-.5}],["공부에 집중한다",{K:.5}]]},
+ {t:"좋아하는 가수 콘서트 티켓팅이 열렸다.",c:[["티켓 산다 (8만원)",{cost:80000,mind:10}],["포기한다",{mind:-2}]]},
+ {t:"부모님이 성적 얘기를 꺼낸다.",c:[["차분하게 대화한다",{mind:2}],["방문을 쾅 닫는다",{mind:-3,rel:-1}]]},
+ {t:"체육 시간 피구, 마지막 한 명이 됐다.",c:[["끝까지 피한다",{body:2,rel:2}],["일부러 맞고 나간다",{mind:1}]]},
+ {t:"폭설로 오후 수업이 단축됐다!",w:m=>m==12,c:[["눈사람을 만든다",{mind:5,rel:2}],["집에서 공부한다",{K:1}]]},
+ {t:"야자 시간, 폰이 자꾸 신경 쓰인다.",w:()=>S.plan.yaja>0,c:[["몰래 본다",{mind:2,K:-.5}],["폰을 사물함에 넣는다",{K:.6}]]},
+ {t:"급식 줄에서 누가 새치기를 했다.",c:[["한마디 한다",{rel:-1,mind:1}],["참는다",{mind:-1}]]},
+ {t:"수업 시간에 졸음이 쏟아진다.",c:[["허벅지 꼬집으며 버틴다",{K:.5,mind:-1}],["엎드려 잔다",{body:1,K:-.5}]]},
+ {t:"선생님이 과제를 칭찬하며 세특에 써 주겠다고 한다.",c:[["더 열심히 한다",{setk:4,mind:3}],["쑥스럽게 웃는다",{setk:2,mind:2}]]},
+ {t:"짝꿍이 집에서 싸 온 떡을 나눠 준다.",c:[["고맙게 먹는다",{rel:2,mind:2}],["다이어트 중이라 사양",{rel:-1}]]},
+ {t:"체육관 뒤에서 친구가 담배를 권한다. \"한 번만 피워 봐.\"",c:[["피운다",{smoke:1}],["거절한다",{rel:-1,mind:1}]]},
+ {t:"쉬는 시간, 친구들이 같은 반 만만한 애를 놀리며 같이 하자고 한다.",c:[["같이 괴롭힌다",{perp:1}],["말린다",{rel:-2,mind:2}],["모른 척한다",{}]]}];
+const HOME=[
+ {t:"낮에 혼자 있는 시간이 길다.",c:[["독서실에 간다",{K:1}],["게임을 한다",{mind:3,K:-.5}]]},
+ {t:"창밖으로 교복 입은 애들이 지나간다.",c:[["옛 반 친구에게 연락해 본다",{rel:3,mind:1}],["커튼을 친다",{mind:-2}]]},
+ {t:"검정고시 학원 상담 전화가 왔다.",c:[["등록한다 (10만원)",{cost:100000,K:2}],["독학한다",{}]]},
+ {t:"부모님이 앞으로 계획을 묻는다.",c:[["계획표를 보여 드린다",{mind:2}],["대답을 피한다",{mind:-2}]]},
+ {t:"동네 편의점에서 알바를 구한다.",c:[["한다 (+6만원)",{money:60000,body:-3,K:-.5}],["공부에 집중한다",{K:.5}]]},
+ {t:"새벽까지 인강을 몰아 들었다.",c:[["계속 달린다",{K:1.5,body:-3}],["오늘은 잔다",{body:2}]]}];
+let S=null,paused=false,spd=2,skip=0,prog=0;
+const kOf=sc=>cl(20+(sc-212)/88*55,5,95);
+const mate=(r,f)=>({n:SN[ri(0,SN.length-1)]+(f?GF:GM)[ri(0,13)],r,h:H[ri(0,3)],s:SK[ri(0,2)],f,pants:f?R()<.7:true,aff:0,st:0,tr:npcTr(),fr:ri(25,55),ab:{gr:ri(1,9),body:ri(30,90),int:ri(30,90),look:ri(30,90),mind:ri(40,90)}});
+function mkCm(o){const same=o.tr.includes("동성애");o.cm=["짝꿍","같은 반","같은 반","동아리"].map((r,i)=>mate(r,i==0?R()<.5:(o.g=="남")!==same))}
+function newChar(){
+ const sc=Math.round(cl(262+nrm()*22,212,300));let x=R()*MS.reduce((a,m)=>a+m[1],0),m=MS[0];
+ for(const c of MS){x-=c[1];if(x<=0){m=c;break}}
+ const z=(sc-262)/22,g=R()<.5?"남":"여";
+ const o={name:SN[ri(0,SN.length-1)]+GN[ri(0,GN.length-1)],g,pants:g=="여"?R()<.7:true,mid:m[0],from:m[2],ct:m[3],sc,w:0,K:kOf(sc),
+ st:{int:cl(Math.round(50+z*12+nrm()*7)),look:cl(Math.round(50+nrm()*14)),body:cl(Math.round(50+nrm()*14)),mind:cl(Math.round(55+nrm()*12)),rel:cl(Math.round(45+nrm()*14))},
+ setk:30,money:0,allow:wpick(ALW),own:{},bought:{},jk:0,sd:0,dorm:0,drop:0,ged:0,bully:0,bwk:0,tch:0,cat:-9,
+ hair:H[ri(0,3)],skin:SK[ri(0,2)],ath:ri(20,26),viol:0,scc:0,nae:[],exams:[],rep:null,sun:null,fri:null,want:null,apps:{},phase:null,sel:[],fm:{ty:0,u:0,m:0},res:null,
+ cm:[],tr:genTr(),qq:[],mc:{n:"",cat:0,sub:0},ill:null,aca:null,rec:0,smk:0,iv:null,nt:"",
+ plan:{act:"study",sleep:7,yaja:0,meal:0,bf:1,mk:0,dye:0,tune:0,tg:0},log:[],ev:null,done:null,club:null,sci:null,fl:{},modal:null,unlock:0,qc:0,pe:0};if(o.tr.includes("잘생김"))o.st.look=cl(o.st.look+12);if(o.tr.includes("못생김"))o.st.look=cl(o.st.look-12);mkCm(o);return o}
+const D=w=>new Date(2025,2,3+7*w),fmt=d=>d.getFullYear()+"."+(d.getMonth()+1)+"."+d.getDate();
+const grade=d=>d<new Date(2026,2,1)?1:d<new Date(2027,2,1)?2:3,key=d=>(d.getMonth()+1)+"-"+Math.ceil(d.getDate()/7);
+const isVac=d=>{const m=d.getMonth()+1;return m<=2||m==8||(m==7&&d.getDate()>14)};
+const NAE={"4-4":"1학기 중간고사","7-1":"1학기 기말고사","10-3":"2학기 중간고사","12-2":"2학기 기말고사"};
+const mokName=(k,g)=>({"3-4":"3월 학력평가","6-1":g==3?"6월 모의평가":"6월 학력평가","9-1":g==3?"9월 모의평가":"9월 학력평가","11-3":g==3?"수능":"11월 학력평가"})[k];
+const say=t=>{S.log.unshift({t:fmt(D(S.w)),x:t});if(RM&&/사귀게|학교폭력 가해|새 동아리|면접에 합격|코로나|골절|자퇴서를|국제교류를 다녀왔다/.test(t))RM.emit("news",{x:S.name+" · "+t}).catch(()=>{})};
+const EL=()=>{const P=S.plan,o=S.own;return cl(S.st.look+(P.mk&&o.mk?5:0)+(P.dye&&o.dye?5:0)+(P.tune&&o.tune?4:0))};
+const nav=()=>S.nae.length?(S.nae.reduce((a,b)=>a+b)/S.nae.length).toFixed(1):"-";
+const skl=v=>v>=80?"최상":v>=60?"상":v>=40?"중":v>=20?"하":"최하";
+function ap(f){for(const k in f){const v=f[k];if(k=="K")S.K=cl(S.K+v);else if(k=="setk")S.setk=cl(S.setk+v);else if(k=="money")S.money=Math.max(0,S.money+v);else if(k=="bully"){S.bully=v;S.bwk=0}else if(S.st[k]!==undefined)S.st[k]=cl(S.st[k]+v)}}
+const c9=p=>p<=4?1:p<=11?2:p<=23?3:p<=40?4:p<=60?5:p<=77?6:p<=89?7:p<=96?8:9;
+function dormEv(){
+ if(S.dorm)return{t:"기숙사 신청·퇴소 기간이다. (3개월마다)",c:[["계속 지낸다",{dorm:2}],["퇴소하고 통학한다",{dorm:0}]]};
+ return{t:"기숙사 신청 기간이다. "+(S.ct=="far"?"먼 곳에서 매일 통학하기는 너무 힘들다.":"통학 대신 기숙사에 들어갈 수도 있다.")+(S.g=="여"?" (여학생 기숙사는 자리가 적어 합격률 40%)":""),c:[["신청한다",{dorm:1}],["통학한다",{}]]}}
+function engQ(){const q=ENG[ri(0,ENG.length-1)],a=q[1][q[2]];
+ return{t:"영어 시간, 쌤이 갑자기 너를 지목했다. \"빈칸에 들어갈 말은?\"<div class=\"q\">"+q[0]+"</div>",c:q[1].map((o,i)=>[o,i==q[2]?{mind:5,setk:1,msg:"영어 쌤 질문 정답! ("+a+") 쌤이 고개를 끄덕였다."}:{body:-4,mind:-1,msg:"영어 쌤 질문에 틀렸다… 뒤에 서서 수업을 들었다. (정답: "+a+")"}])}}
+function rnd(L,m,g){const A=L.filter(e=>(!e.g||g>=e.g)&&(!e.o||!S.fl[e.o])&&(!e.w||e.w(m))),e=A[ri(0,A.length-1)];if(e.o)S.fl[e.o]=1;return{t:typeof e.t=="function"?e.t():e.t,c:e.c}}
+function pick(){
+ const d=D(S.w),g=grade(d),m=d.getMonth()+1,kk=key(d),vac=isVac(d);
+ if(S.st.mind<15&&!S.fl.q&&!S.drop){S.fl.q=1;return{t:"더는 못 버티겠다. 학교를 계속 다녀야 할까? 문득 자퇴서가 떠오른다.",c:[["조금만 더 버틴다",{mind:15,rel:-1}],["자퇴한다",{quit:1}]]}}
+ if(S.drop)return R()<.4?rnd(HOME,m,g):null;
+ if(S.trip&&S.w<S.trip.u)return R()<.7?rnd(TRIPEV[S.trip.c],m,g):null;
+ const yr=d.getFullYear(),once=k=>!S.fl[k+yr]&&(S.fl[k+yr]=1);
+ if(g>=2&&kk=="3-1"&&!S.club&&once("rc"))S.qq.push(clubEv());
+ if(g==2&&kk=="3-3"&&!S.fl.mkc){S.fl.mkc=1;return{t:"2학년 3월, 동아리를 직접 만들 수 있다. 새 동아리를 만들까?",c:[["만든다",{mkc:1}],["만들지 않는다",{}]]}}
+ if(g==1&&kk=="10-1"&&!S.fl.sg){S.fl.sg=1;return{t:"1학년 10월, 싱가포르 국제교류 프로그램 참가자를 모집한다. 참가비는 100만원이다.",c:[["참가한다 (100만원)",{cost:1000000,trip:"sg",rel:5,mind:10,setk:5,int:1,look:2,msg:"싱가포르 국제교류를 다녀왔다. 시야가 넓어졌다."}],["참가하지 않는다",{K:.5}]]}}
+ if(g==2&&kk=="5-1"&&!S.fl.de){S.fl.de=1;return{t:"2학년 5월, 독일 국제교류 프로그램 참가자를 모집한다. 참가비는 300만원이다.",c:[["참가한다 (300만원)",{cost:3000000,trip:"de",rel:6,mind:14,setk:8,int:2,look:3,msg:"독일 국제교류를 다녀왔다. 세특에 쓸 이야기가 풍성해졌다."}],["참가하지 않는다",{K:.5}]]}}
+ if(kk=="3-2"&&once("pi")){const me=S.club=="메시아";return{t:"3월 14일 파이데이! 수학동아리 메시아가 파이 퀴즈 대회와 파이 나눔 행사를 연다."+(me?" 부원이라 부스 운영 일손이 필요하다.":""),c:(me?[["부스를 운영한다",{setk:5,rel:3,K:.5,mind:-1}]]:[]).concat([["퀴즈 대회에 참가한다",{K:1,setk:2,rel:3}],["파이를 사 먹는다 (3천원)",{cost:3000,mind:4,rel:2}],["구경만 한다",{mind:1}]])}}
+ if(m==10&&kk=="10-2"&&once("expo")){const me=S.club=="알케미아"||S.club=="메시아";return{t:"10월 둘째 주, 수학·과학 체험전이 열린다.",c:(me?[["동아리 부스를 운영한다",{setk:6,rel:3,mind:-1}]]:[]).concat([["체험 부스를 운영한다",{setk:4,rel:2,mind:-1}],["부스를 돌며 체험한다",{mind:4,K:.5,setk:1}],["참여하지 않고 공부한다",{K:1}]])}}
+ if(m==10&&d.getDate()>=25&&once("fes"))return{t:"10월 마지막 주, 학교 축제다! 무대, 주점, 부스로 학교가 들썩인다.",c:[["무대에 선다",{look:2,rel:6,mind:6}],["주점·부스를 운영한다 (3만원)",{cost:30000,rel:4,mind:5,setk:1}],["친구·연인과 즐긴다 (2만원)",{cost:20000,mind:7,rel:3,fest:1}],["안 간다",{K:1}]]}
+ if(g==1&&kk=="4-3"&&!S.fl.jk){S.fl.jk=1;return{t:"반에서 야구잠바 단체 주문을 받는다. 흰 팔에 네이비 몸통, 등에는 반 이름이 박힌다. 가격은 7만원.",c:[["산다 (7만원)",{cost:70000,jk:1,look:3,rel:2}],["안 산다",{rel:-1,msg:"야구잠바를 사지 않았다. 반에서 나만 교복 차림이다."}]]}}
+ if(g==1&&kk=="12-3"&&!S.fl.sci){S.fl.sci=1;return{t:"1학년이 끝나 간다. 2학년 계열을 정해야 한다.",c:[["이과",{int:2,K:-2,sci:"이과"}],["문과",{rel:2,mind:2,sci:"문과"}]]}}
+ if(g==2&&kk=="4-1"&&!S.fl.trip){S.fl.trip=1;return{t:"2학년 수학여행! 3박 4일 제주도다.",c:[["친한 애들과 실컷 논다",{rel:6,mind:8,body:-2}],["기념품을 잔뜩 산다 (3만원)",{cost:30000,rel:3,mind:6}],["숙소에서 몰래 공부한다",{K:1,rel:-3,mind:-2}]]}}
+ if(g==2&&kk=="6-1"&&!S.fl.sd){S.fl.sd=1;return{t:"선도부원을 뽑는다. 아침마다 교문에서 복장 단속을 하고, 왼팔에 노란 완장을 찬다. (선발률 12%)",c:[["지원한다",{sd:1}],["안 한다",{}]]}}
+ if(["3-1","6-2","9-2","12-2"].includes(kk)&&!(g==3&&m>=9)&&!S.fl["dm"+S.w]&&(S.ct!="walk"||S.dorm)){S.fl["dm"+S.w]=1;return dormEv()}
+ if(!vac&&!S.bully&&S.w>3&&R()<.012+Math.max(0,50-S.st.rel)/3000+Math.max(0,50-EL())/4000+Math.max(0,50-S.st.body)/5000)
+  return{t:"같은 반 "+S.cm[0].n+" 무리가 너를 표적으로 삼기 시작했다. 물건을 숨기고 단톡에서 따돌린다. 학교폭력이다.",c:[["참고 넘긴다",{bully:1,mind:-6}],["담임께 말한다",{bully:1,mind:-3,tell:1}],["맞선다",{bully:1,fight:1}]]};
+ if(!vac&&!S.cm.some(c=>c.st==2)&&R()<.008+EL()/6000+S.st.rel/8000){const L=[1,2,3].filter(i=>S.cm[i].st<2);
+  if(L.length){const i=L[ri(0,L.length-1)];return{t:S.cm[i].n+"이(가) 쉬는 시간에 조용히 불러냈다. \"나 너 좋아해. 사귈래?\"",c:[["받아 준다",{acc:i}],["거절한다",{mind:-1,rel:-1,msg:"미안하다고 말했다. 조금 어색해졌다."}]]}}}
+ if(S.club&&!vac&&S.w%5==2)return clubAct();
+ if(vac||R()>.5)return null;
+ const r=R();
+ if(r<.16)return engQ();
+ if(r<.25){const ck=ri(0,3),cn=CATS[ck].n;return{t:"급식실 뒤에서 학교 고양이 "+cn+"이(가) 느릿느릿 다가온다.",c:[["쓰다듬는다",{mind:6,cat:1,ck,msg:cn+"을(를) 쓰다듬었다. 골골송에 마음이 녹는다."}],["츄르를 준다 (2천원)",{cost:2000,mind:9,cat:1,ck,msg:cn+"이(가) 츄르를 먹고 손에 머리를 비볐다."}],["그냥 지나간다",{}]]};}
+ if(r<.5)return rnd(SPD,m,g);if(r<.55&&!S.aca)return acaEv();return rnd(EVS,m,g)}
+function teacher(pre){S.bully=0;S.bwk=0;S.tch=2;ap({mind:12,rel:4});say(pre+"노란 막대를 든 학생부 쌤이 와서 "+S.cm[0].n+" 무리를 데리고 갔다. 학폭이 정리됐다.")}
+function dropOut(){S.drop=1;S.dorm=0;S.scc=0;S.bully=0;S.sd=0;S.plan.yaja=0;say("자퇴서를 냈다. 이제 집에서 검정고시와 수능을 준비한다. (정시만 지원 가능)")}
+function choose(i){
+ const ev=S.ev,c=ev.c[i],f=Object.assign({},c[1]);S.ev=null;let said=0;
+ if(f.mkc){S.modal="mkc";say("동아리 창설을 준비한다.");return render()}
+ if(f.tryc){S.iv={n:f.tryc,i:0,ok:0};S.ev=ivNext();say(f.tryc+" 면접장에 들어갔다.");return render()}
+ if(f.iva!==undefined){const v=S.iv;v.ok+=f.iva;v.i++;if(v.i<CQ[v.n].length){S.ev=ivNext();return render()}
+  const need=Math.ceil(CQ[v.n].length*(v.n=="알케미아"?.6:.5));S.iv=null;
+  if(v.ok>=need&&!(S.tr.includes("못생김")&&R()<.2)){S.club=v.n;S.cc=null;ap(CE[v.n]);say(v.n+" 면접에 합격했다! ("+v.ok+"/"+CQ[v.n].length+")")}else{delete S.fl.club;ap({mind:-3});say(v.n+" 면접에서 떨어졌다. ("+v.ok+"/"+CQ[v.n].length+") 다음 모집 때 다시 도전할 수 있다.")}return render()}
+ if(f.cost){if(S.money<f.cost){say("돈이 모자라서 못 했다. ("+c[0]+")");ap({mind:-1});return render()}S.money-=f.cost}
+ if(f.quit){dropOut();return render()}
+ if(f.club)S.club=f.club;if(f.sci)S.sci=f.sci;if(f.cat)S.cat=S.w;if(f.ck!=null)S.cn=f.ck;
+ if(f.jk){S.jk=1;say("야구잠바를 샀다! 흰 팔에 네이비 몸통.");said=1}
+ if(f.dorm!==undefined){if(f.dorm==1){if(S.g=="남"||R()<.4){S.dorm=1;say("기숙사 입사가 확정됐다.")}else say("기숙사 추첨에서 떨어졌다."+(S.ct=="far"?" 장거리 통학을 해야 한다.":""))}else if(f.dorm==0){S.dorm=0;say("기숙사에서 퇴소했다.")}else say("기숙사에 계속 지내기로 했다.");said=1}
+ if(f.sd){if(R()<.12){S.sd=1;f.setk=3;say("선도부에 뽑혔다! 왼팔에 노란 완장을 찼다. (내년 6월까지)")}else say("선도부 선발에서 떨어졌다.");said=1}
+ if(f.acc!==undefined){const cc=S.cm[f.acc];cc.st=2;cc.aff=Math.max(cc.aff,65);f.mind=8;say(cc.n+"와(과) 사귀게 됐다!");said=1}
+ else if(f.love){const cc=S.cm[ev.lv];if(R()<.2+cc.aff/250+EL()/400+(S.tr.includes("잘생김")?.12:0)-(S.tr.includes("못생김")?.12:0)){cc.st=2;cc.aff=Math.max(cc.aff,60);say(cc.n+"와(과) 사귀게 됐다!");f.mind=8;f.rel=2}else{cc.aff-=15;say("고백은 거절당했다.");f.mind=-6}said=1}
+ else if(f.fight){const w=R()*100<S.st.body*.6+S.st.mind*.2;say(w?"맞서자 무리가 주춤했다.":"맞섰지만 오히려 더 크게 번졌다.");if(w){f.bully=0;f.mind=4}else{f.mind=-8;f.rel=-3}said=1}
+ else if(f.tell){if(R()<.5){delete f.bully;ap({bully:0});teacher("담임이 학생부에 알렸다. ")}else say("담임은 장난으로 넘겼다.");said=1}
+ if(f.cheat){const c3=S.cm[ev.lv];c3.aff=cl(c3.aff+20);S.cheat={t:ev.lv,u:S.w+8};ap({mind:4,rel:1});say(c3.n+"와(과) 몰래 만나기 시작했다…");said=1}
+ if(f.confront){const c2=S.cm[ev.lv];if(R()<.5){c2.st=3;ap({mind:-8});say("따져 묻자 "+c2.n+"이(가) 인정하고 헤어지자고 했다.")}else{c2.aff=cl(c2.aff-10);ap({mind:-2});say("오해였다. 하지만 사이가 서먹해졌다.")}said=1}
+ if(f.fight){if(R()<.5){ap({body:-3,mind:2,rel:-3});say("에브라임 부장과 몸싸움 끝에 이겼다.")}else{ap({body:-8,mind:-5,rel:-3});say("에브라임 부장과 싸우다 크게 졌다.")}S.viol++;if(R()<.3){const lv=ri(1,3);S.rec=Math.max(S.rec,lv);say("싸움이 학교폭력으로 신고됐다. 징계: "+SV[lv-1]+".")}said=1}
+ if(f.joinn){S.club=f.joinn;S.cc={cat:f.joinc||0,sub:f.joinn};ap(CEC[f.joinc]||{});say("다른 학생이 만든 동아리 '"+f.joinn+"'에 가입했다!");said=1}
+ if(f.trip){S.trip={c:f.trip,u:S.w+2};say((f.trip=="sg"?"싱가포르":"독일")+"에 도착했다. 학교 행사에는 참여할 수 없다.")}
+ if(f.hold){const c2=S.cm[ev.lv];if(R()<.35+EL()/300){c2.aff=45;say(c2.n+"을(를) 붙잡았다. 겨우 다시 마음을 돌렸다.");f.mind=2}else{c2.st=3;say(c2.n+"은(는) 끝내 돌아서 버렸다.");f.mind=-9}said=1}
+ if(f.dump){const c2=S.cm[ev.lv];c2.st=3;say(c2.n+"와(과) 헤어졌다.");f.mind=-6;said=1}
+ if(f.aca){const[x,l]=f.aca.split("|");S.aca={s:x,l,f:l[0]=="과"?80000:40000};say(l+"에서 "+x+" 수업을 등록했다. (주 "+won(S.aca.f)+")");said=1}
+ if(f.smoke){ap({mind:8});S.smk++;if(R()<.5){ap({body:-10,mind:-3});S.viol++;say("담배를 피우니 기분은 좋아졌지만 학생부 쌤에게 걸려 맞았다. 체력이 크게 떨어졌다.")}else say("담배를 피웠다. 기분은 좋아졌다. 다행히 걸리지 않았다.");said=1}
+ if(f.perp){if(R()<.55){const lv=wpick([[1,.3],[2,.25],[3,.2],[4,.15],[5,.1]]);S.rec=Math.max(S.rec,lv);ap({mind:-5,rel:-4,setk:-3*lv});say("학교폭력 가해로 신고됐다. 징계: "+SV[lv-1]+" · 학폭 기록이 남았다. 대학 합격이 크게 어려워진다.")}else{ap({mind:-4,rel:-1});say("들키지는 않았다. 하지만 마음이 편치 않다.")}said=1}
+ if(f.fest){const cc=S.cm[TG()];cc.aff=cl(cc.aff+8)}
+ if(!said)say(f.msg||c[0]);
+ ["fight","tell","quit","club","sci","love","cost","msg","jk","dorm","sd","acc","cat","ck","fight","cheat","confront","aca","smoke","perp","fest","joinn","joinc","trip","hold","dump"].forEach(k=>delete f[k]);ap(f);render()}
+function exam(name,mok){
+ const P=S.plan,sc=S.K*.8+(S.st.int-50)*.25-Math.max(0,50-S.st.mind)*.15-Math.max(0,45-S.st.body)*.1+nrm()*7-(S.bully?5:0)-(S.ill?4:0)-(S.st.mind<30?4:0)-(P.sleep<=5?2:0),pool=126-S.ath,p=cl(100*(1-Phi((sc-50)/17)),.5,99.5),rank=Math.max(1,Math.min(pool,Math.round(pool*p/100))),pt=rank/126*100;
+ const rk=S.drop?"":" · 전교 "+rank+"등/126명";
+ let r={n:name,rank:S.drop?null:rank,k:mok?"모고":"내신"},gd;
+ if(!mok){gd=pt<=10?1:pt<=34?2:pt<=66?3:pt<=90?4:5;S.nae.push(gd);r.g5=gd;say("["+name+"] 내신 "+gd+"등급(5등급제)"+rk)}
+ else{const sb=["국어","수학","영어","탐구1","탐구2"];let tp=0;
+  r.sub=sb.map(n=>{const s=sc+nrm()*5+(n=="수학"&&S.sci=="이과"?2:0)+(S.tr.includes("유학파")?(n=="영어"?9:n=="국어"?-9:0):0),pn=cl(100*(1-Phi((s-47)/17)),.1,99.9);
+   if(n=="영어"){const raw=Math.round(cl(s+18,0,100));return[n,raw+"점","-",raw>=90?1:raw>=80?2:raw>=70?3:raw>=60?4:raw>=50?5:raw>=40?6:raw>=30?7:raw>=20?8:9]}
+   tp+=pn;return[n,Math.round(100+(s-50)/17*20),Math.round(100-pn),c9(pn)]});
+  const av=tp/4;r.avg=Math.round(100-av);r.g9=c9(av);if(name=="수능")S.sun=av;
+  say("["+name+"] 평균 백분위 "+r.avg+" · "+r.g9+"등급(9등급제)"+rk)}
+ S.rep=r;S.exams.push(r);
+ if(!S.drop){if(rank<=20&&!S.scc){S.scc=1;say("전교 20등 안에 들어 SC반에 편성됐다. 매주 금요일 모의고사를 본다.")}
+ else if(rank>34&&S.scc){S.scc=0;say("순위가 내려가 SC반에서 빠졌다.")}}
+ ap({mind:pt<=34?4:pt>=75?-4:0})}
+function love(){
+ const P=S.plan,ci=tgW(S.plan),cur=S.cm[ci],s=S.st,bt=S.tr.includes("잘생김")?1.2:S.tr.includes("못생김")?-1:0,ct=(cur.tr||[]).includes("잘생김")?-.6:(cur.tr||[]).includes("못생김")?.5:0;
+ if(S.cheat){const p=S.cm.find(c=>c.st==2);if(!p)S.cheat=null;else if(R()<.14){p.st=3;S.cm[S.cheat.t].aff=cl(S.cm[S.cheat.t].aff-15);ap({mind:-8,rel:-6});say("바람 피운 사실이 들통났다! "+p.n+"이(가) 이별을 통보했다.");S.cheat=null}else if(S.w>=S.cheat.u){S.cheat=null;say("바람은 들키지 않고 지나갔다. 찝찝하다.");ap({mind:-2})}}
+ else if(!S.ev&&R()<.04){const p=S.cm.find(c=>c.st==2),o=S.cm.map((c,i)=>i).filter(i=>i>0&&S.cm[i].st<2);if(p&&o.length){const oi=o[ri(0,o.length-1)];S.ev={t:"다른 친구 "+S.cm[oi].n+"이(가) 은근히 호감을 표현한다. 지금 사귀는 "+p.n+"에게는 비밀이다.",lv:oi,c:[["몰래 만난다",{cheat:1}],["선을 긋는다",{mind:1}]]}}}
+ if(P.act=="date"){cur.aff=cl(cur.aff+1.5+bt+ct+(EL()+s.rel)/70+R()*2);ap({mind:2,K:-.4});
+  if(cur.st==0&&cur.aff>=55){cur.st=1;say(cur.n+"와(과) 썸이 시작됐다.")}
+  else if(cur.st==1&&cur.aff>=75&&!S.ev)S.ev={t:cur.n+"에게 마음을 고백할까?",lv:ci,c:[["고백한다",{love:1}],["더 지켜본다",{mind:-1}]]}}
+ S.cm.forEach((c,i)=>{if(i==0||(P.act=="date"&&c===cur))return;
+  if(c.st==2){c.aff-=2.5;if(R()<.012&&!S.ev)S.ev={t:c.n+"이(가) 다른 사람과 다정하게 있는 걸 봤다.",lv:i,c:[["따져 묻는다",{confront:1}],["모른 척한다",{mind:-3}]]};if(c.aff<30&&c.aff>=12&&R()<.35&&!S.ev)S.ev={t:c.n+"이(가) 헤어지자고 한다.",lv:i,c:[["붙잡는다",{hold:1}],["받아들인다",{dump:1}]]};else if(c.aff<12){c.st=3;say(c.n+"에게 차였다…");ap({mind:-12,rel:-2})}}
+  else if(c.st==1)c.aff=Math.max(0,c.aff-.8);else if(c.st<2)c.aff=Math.max(0,c.aff-.3)})}
+function next(){
+ if(S.done||S.ev||S.phase)return;
+ if(S.qq.length){S.ev=S.qq.shift();return render()}
+ const d=D(S.w),g=grade(d),m=d.getMonth()+1,vac=isVac(d),sch=!vac&&!S.drop,P=S.plan,s=S.st,kk=key(d);
+ S.money+=S.allow;S.bought={};
+ if(P.meal==2){if(S.money>=15000)S.money-=15000;else{P.meal=0;say("돈이 없어 매점·배달을 끊고 급식을 먹는다.")}}
+ let v=0,why=[];const chk=(p,t)=>{if(R()<p){v++;why.push(t)}};
+ if(sch){if(P.mk&&S.own.mk)chk(.3,"화장");if(P.dye&&S.own.dye)chk(.4,"염색");if(P.tune&&S.own.tune)chk(.35,"교복 튜닝");if(P.meal==2)chk(.25,"교내 배달·매점");if(P.yaja&&s.rel>55)chk(.1,"야자 이탈");
+  chk({5:.3,6:.12,7:.05,8:.02}[P.sleep]*(S.dorm?.5:S.ct=="far"?1.5:1),"지각");if(P.act=="date"&&S.cm[TG()].st==2)chk(.15,"교내 연애");if(S.tr.includes("양아치"))chk(.12,"양아치 행동");if(S.tr.includes("반사회적"))chk(.06,"반사회적 행동");
+  if(!S.dorm&&S.ct!="walk"&&R()<(S.ct=="far"?.02:.01)){v++;why.push("버스 놓침");ap({mind:-3});say("통학버스가 너를 두고 떠났다… 결국 지각했다.")}}
+ if(v){S.viol+=v;say("교칙 위반 "+v+"회 ("+why.join("·")+") · 누적 "+Math.min(S.viol,3)+"/3")}
+ if(S.viol>=3){S.viol=0;P.mk=P.dye=P.tune=0;say("교칙 3회 누적, 토요일에 교내 봉사를 했다. 꾸미기는 모두 해제됐다.");ap({mind:-3,body:-1,rel:1})}
+ const slm={5:.75,6:.92,7:1,8:.97}[P.sleep]*(S.tr.includes("불면증")?.9:1),eff=(S.own.ing?1.12:1)*(S.tr.includes("ADHD")?.85:1);
+ ap({mind:{5:-4,6:-1,7:1,8:2}[P.sleep],body:{5:-3,6:-1,7:1,8:2}[P.sleep]});
+ if(!P.bf)ap({mind:-1,K:-.3});else ap({body:.5});
+ ap([{body:1,mind:.5},{body:-.5},{mind:3,body:-1},{look:.4,body:-2,mind:-2}][P.meal]);
+ if(P.yaja&&sch){S.K=cl(S.K+.4*P.yaja*slm*eff*Math.max(.05,1.1-S.K/72));ap({body:-.7*P.yaja,mind:-.6*P.yaja})}
+ if(sch&&S.dorm){S.K=cl(S.K+.2*slm*Math.max(.05,1.1-S.K/72));ap({rel:.3,mind:-.2})}
+ if(sch&&!S.dorm&&S.ct=="far")ap({body:-1,mind:-.5});
+ if(sch&&S.sd)ap({setk:.25,rel:-.2,mind:-.2});
+ if(sch&&S.club)ap({setk:.1});
+ if(P.act=="study"){S.K=cl(S.K+(.55+s.int/200+R()*.3)*slm*eff*Math.max(.05,1.1-S.K/72));ap({mind:-2,body:-1});if(sch)ap({setk:.15})}
+ else{S.K=cl(S.K-.25);if(P.act=="gym")ap({body:3,mind:1,look:.3});if(P.act=="friend")ap({rel:3,mind:2});if(P.act=="rest")ap({mind:4,body:1})}
+ if(S.scc&&sch){S.K=cl(S.K+.8);ap({mind:-1.5,setk:.1});if(S.w%4==0){const fp=cl(100*(1-Phi((S.K+nrm()*6-50)/17)),1,99);S.fri=c9(fp);say("금요 모의고사 결과: "+S.fri+"등급")}}
+ love();wkExtra(m,sch,P);if(MYCL&&S.w%4==0)pubClub();
+ if(S.bully){S.bwk++;ap({mind:-4,rel:-1,K:-.5});if(S.bwk>=2&&(R()<.3||s.mind<25))teacher("")}
+ if(S.tch>0)S.tch--;
+ if(sch&&m!=1){if(NAE[kk]&&!(g==3&&m>=10))exam(NAE[kk],0);const mn=mokName(kk,g);if(mn)exam(mn,1)}
+ if(S.drop&&g==3&&kk=="11-3")exam("수능",1);
+ if(S.drop&&!S.ged&&(kk=="4-2"||kk=="8-2")){const ok=S.K+nrm()*8>22;if(ok)S.ged=1;ap({mind:ok?5:-5});say(ok?"검정고시에 합격했다! 고졸 학력을 인정받았다.":"검정고시에 떨어졌다. 다음 회차를 노린다.")}
+ if(S.sd&&d>=new Date(2027,5,1)){S.sd=0;say("선도부 임기가 끝나 노란 완장을 반납했다.")}
+ S.w++;
+ const d2=D(S.w),k2=key(d2);
+ if(d2>=new Date(2027,11,27)){endFinal();return render()}
+ if(grade(d2)==3&&k2=="9-3"&&!S.fl.susi&&!S.drop){S.fl.susi=1;S.phase="susi";S.sel=[];S.fm={ty:0,u:0,m:S.want??0};say("수시 원서 접수 기간이다. (최대 6장 · 학종/교과)");return render()}
+ if(grade(d2)==3&&k2=="12-1"&&!S.fl.jeong){S.fl.jeong=1;if(S.drop&&!S.ged)say("검정고시에 합격하지 못해 정시 원서를 낼 수 없다.");else{S.phase="jeong";S.sel=[];S.fm={ty:2,u:0,m:S.want??0};say("정시 원서 접수 기간이다. (가·나·다군 3장)");return render()}}
+ if(!S.ev)S.ev=pick();
+ render()}
+const pctNae=()=>{const a=S.nae.length?S.nae.reduce((x,y)=>x+y)/S.nae.length:3;return cl(2+Math.pow(a-1,1.5)*18,1,98)};
+function myP(ty){if(ty==2)return S.sun!=null?S.sun:60;const p=pctNae();return ty==1?p:cl(p*(1.3-S.setk/100*.6)*(S.club?.95:1),.5,98)}
+const elig=u=>{const f=UNIV[u][2];return f=="f"&&S.g=="남"?"여대":f=="s"&&S.sci=="문과"?"이과 전용":""};
+function chance(ty,u,m){if(elig(u))return 0;const x=Math.log(myP(ty)/(UNIV[u][1]*[1.2,1,.85,.35][MH[m]]));let p=cl(1/(1+Math.exp(3.5*x)),.02,.97);if(S.rec)p*=REC[S.rec];if(ty==0&&S.tr.includes("못생김"))p*=.8;return p}
+const chL=p=>(p>=.75?"안정":p>=.45?"적정":p>=.2?"소신":"위험")+" · 약 "+Math.round(p*100)+"%";
+function sumHTML(){const L=[],ds=S.cm.filter((c,i)=>i>0&&c.st>=2).map(c=>c.n+(c.st==3?"(이별)":"")),h=S.st;
+ L.push("출신 "+S.mid+" · "+(S.drop?"자퇴 후 검정고시 "+(S.ged?"합격":"미합격"):(S.dorm?"기숙사 생활":CT[S.ct])));
+ L.push("동아리 "+(S.club||"없음")+" · 계열 "+(S.sci||"미선택")+(S.aca?" · 학원 "+S.aca.s:"")+(S.scc?" · SC반":"")+(S.jk?" · 야구잠바":""));
+ L.push("연애 "+(ds.length?ds.join(", "):"없음")+(S.cat>=0?" · 학교 고양이 "+CATS[S.cn||0].n+"와(과) 친해졌다":""));
+ L.push("특성 "+(S.tr.length?S.tr.join(", "):"없음")+(S.smk?" · 흡연 "+S.smk+"회":"")+(S.rec?" · 학폭 가해 기록("+SV[S.rec-1]+")":""));
+ L.push("성적 내신 "+nav()+"등급 · 세특 "+skl(S.setk)+" · 수능 평균 백분위 "+(S.sun!=null?Math.round(100-S.sun):"-"));
+ L.push("마지막 상태 지능 "+Math.round(h.int)+" · 체력 "+Math.round(h.body)+" · 멘탈 "+Math.round(h.mind)+" · 관계 "+Math.round(h.rel));
+ S.done.sl=L;return'<div class="mut" style="margin:10px 0 2px">학창시절 요약</div>'+L.map(l=>'<div class="row"><span>'+esc(l)+'</span></div>').join("")}
+function creditsHTML(){const d=S.done,sec=(t,a)=>'<h3>'+t+'</h3>'+a.map(x=>'<p>'+esc(x)+'</p>').join("");
+ return'<div class="cr"><div class="sv">'+scene()+'</div><div class="vw"><div class="rl"><h2>도개고 살아남기</h2><p>2025.3 – 2027.12</p>'+sec("엔딩",[d.t+" 엔딩",d.x])+sec("제작",["이현준"])+sec("주연",[S.name])+sec("함께한 친구들",S.cm.map(x=>x.n))+sec("학창시절",d.sl||[])+sec("특별출연",["학교 고양이 미쯔 · 콩콩이 · 겨울이 · 루이"])+sec("배경음악",["브라우저가 즉석에서 연주한 단 하나의 곡"])+'<h2 style="margin-top:60px">Thank you for playing</h2><div style="height:40vh"></div></div></div><div class="bt"><button onclick="S.cr=1;render()">건너뛰기 · 결과 보기</button><button onclick="musToggle()">♪</button></div></div>'}
+function endFinal(){endFinal0();S.done.sm=sumHTML();const w=S.res.filter(r=>r.ok).sort((a,b)=>UNIV[a.u][1]-UNIV[b.u][1])[0];S.hall={n:S.name,rk:w?UNIV[w.u][1]:999,r:w?UNIV[w.u][0]+" "+M[w.m]+" ("+TY[w.ty]+")":"불합격",nae:nav()};saveHall()}
+function endFinal0(){
+ const res=[];["susi","jeong"].forEach(k=>(S.apps[k]||[]).forEach(a=>{const pr=chance(a.ty,a.u,a.m);res.push({ty:a.ty,u:a.u,m:a.m,pr,ok:R()<pr})}));
+ const win=res.filter(r=>r.ok).sort((a,b)=>UNIV[a.u][1]-UNIV[b.u][1])[0];S.res=res;
+ const sm=S.drop?" (검정고시 · 수능 평균 백분위 "+(S.sun!=null?Math.round(100-S.sun):"-")+")":" (내신 평균 "+nav()+"등급 · 세특 "+skl(S.setk)+" · 수능 평균 백분위 "+(S.sun!=null?Math.round(100-S.sun):"-")+")";
+ S.done=win?{t:"합격",x:S.name+"은(는) "+(S.drop?"검정고시 출신으로 ":"도개고를 졸업하고 ")+UNIV[win.u][0]+" "+M[win.m]+"에 "+TY[win.ty]+" 전형으로 진학한다."+sm}:{t:"전원 불합격",x:S.name+"은(는) 지원한 곳에 모두 합격하지 못했다. 재수의 길이 열려 있다."+(res.length?"":" (원서를 내지 않았다)")+sm}}
+function bar(l,v,c){return'<div class="bar"><b>'+l+'</b><i><s style="width:'+v+'%;background:var(--'+c+')"></s></i><em>'+Math.round(v)+'</em></div>'}
+const ROWS=["...hhhhhh...","..hhhhhhhh..","..hssssssh..","..ssessess..","..ssssssss..","..sssmmsss..",".....ss.....","..uuwwwwuu..",".auuuttuuua.",".auuuttuuua.",".auuuuuuuua.",".suuuuuuuus.","..pppppppp..","..ppp..ppp..","..ppp..ppp..","..kkk..kkk.."];
+function av(x,y,u,o){
+ const mo=S?D(S.w).getMonth()+1:3,su=mo>=5&&mo<=9&&!o.nu,bd=o.body||"#18181d",C={t:"#2a2a33",x:"#e6f0f6",z:"#f5f5f5",h:o.h,s:o.s,e:"#222",m:o.sad?"#6b6b6b":o.mk?"#d03a5a":"#b5524a",u:bd,a:o.arm||(su?o.s:bd),w:o.nu?"#f4f4f4":su?"#111":"#7a1f2b",p:o.leg||"#202026",q:"#18181d",k:"#111",c:"#eb9a9a",y:"#f2c600"};
+ const g=ROWS.map(r=>r.split(""));
+ if(o.f){for(let r=3;r<=6;r++){g[r][1]="h";g[r][10]="h"}if(!o.pants){g[12]=g[12].map(c=>c=="p"?"q":c);[13,14].forEach(r=>g[r]=g[r].map(c=>c=="p"?"s":c))}}
+ if(o.mk){g[4][3]="c";g[4][8]="c"}if(o.sick=="mask"){for(let c=3;c<=8;c++)g[5][c]="x";for(let c=4;c<=7;c++)g[4][c]="x"}if(o.sick=="cast"){g[8][1]="z";g[9][1]="z";g[10][1]="z"}
+ if(o.band){g[8][10]="y";g[9][10]="y"}
+ let s='<g transform="translate('+x+','+y+') scale('+u+')">';
+ g.forEach((r,j)=>r.forEach((c,i)=>{if(c!=".")s+='<rect x="'+i+'" y="'+j+'" width="1.02" height="1.02" fill="'+C[c]+'"/>'}));
+ if(o.stick)s+='<rect x="11" y="3" width=".9" height="10" fill="#f2c600"/>';
+ return s+'</g>'}
+const myO=sad=>({h:S.plan.dye&&S.own.dye?DY[S.plan.dye-1]:S.hair,s:S.skin,f:S.g=="여",pants:S.pants,mk:S.plan.mk&&S.own.mk,
+ body:S.drop?"#5f7f9f":S.jk?"#1d2b4f":S.plan.tune&&S.own.tune?"#2c2c3a":"#18181d",arm:S.drop?"#5f7f9f":S.jk?"#f1f1f1":null,leg:S.drop?"#3b4a6b":null,band:S.sd,sad,sick:S.ill&&S.ill.t,nu:S.drop||S.jk?1:0});
+const mO=c=>({h:c.h,s:c.s,f:c.f,pants:c.pants});
+const CAT=["o.o.......","ooo......o","eoe.....o.","ooooooooo.",".ooooooo..",".o.o..o.o."];
+const CATS=[{n:"미쯔",f:["#1e1e1e","#e9892b"],m:1,e:"#111"},{n:"콩콩이",f:["#f0a947","#f7c98a"],e:"#111"},{n:"겨울이",f:["#1a1a1e","#1a1a1e"],e:"#e8c13a"},{n:"루이",f:["#8d9199","#a9adb4"],e:"#111"}];
+function cat(x,y,u,k){k=k||0;const K=CATS[k];let s='<g transform="translate('+x+','+y+') scale('+u+')">';CAT.forEach((r,j)=>r.split("").forEach((c,i)=>{if(c!=".")s+='<rect x="'+i+'" y="'+j+'" width="1.02" height="1.02" fill="'+(c=="e"?K.e:(K.m?((i*3+j*5)%7<3?K.f[0]:K.f[1]):((i+j)%5==0?K.f[1]:K.f[0])))+'"/>'}));return s+'<text x="5" y="-1.5" font-size="3" fill="#a8324f" text-anchor="middle">'+K.n+'</text></g>'}
+function cat0(x,y,u){let s='<g transform="translate('+x+','+y+') scale('+u+')">';CAT.forEach((r,j)=>r.split("").forEach((c,i)=>{if(c!=".")s+='<rect x="'+i+'" y="'+j+'" width="1.02" height="1.02" fill="'+(c=="e"?"#111":((i*3+j*5)%7<3?"#1e1e1e":"#e9892b"))+'"/>'}));return s+'<text x="5" y="-1.5" font-size="3" fill="#a8324f" text-anchor="middle">미쯔</text></g>'}
+const SEA=[{sky:"#c6e6f5",gr:"#9cc28a",tr:"#f4b6c9",pt:"#f7c6d5"},{sky:"#8fd0f0",gr:"#78b062",tr:"#3f9b4f",pt:null},{sky:"#f3dcb4",gr:"#b9a66a",tr:"#d9822b",pt:"#c9652a"},{sky:"#d6dde6",gr:"#eef2f6",tr:null,pt:"#fff"}];
+function tree(x,c){let s='<rect x="'+(x+9)+'" y="50" width="4" height="24" fill="#6b4a32"/>';
+ if(c)s+='<rect x="'+x+'" y="34" width="22" height="18" fill="'+c+'"/><rect x="'+(x+3)+'" y="30" width="16" height="4" fill="'+c+'"/>';
+ else s+='<rect x="'+(x+4)+'" y="40" width="2" height="12" fill="#6b4a32"/><rect x="'+(x+16)+'" y="38" width="2" height="13" fill="#6b4a32"/><rect x="'+(x+5)+'" y="46" width="12" height="2" fill="#6b4a32"/>';return s}
+function scene(){
+ const m=D(S.w).getMonth()+1,se=m>=3&&m<=5?0:m>=6&&m<=8?1:m>=9&&m<=11?2:3,C=SEA[se],c=S.cm;
+ let s='<svg viewBox="0 0 240 100" style="width:100%;display:block;border-radius:10px;shape-rendering:crispEdges"><rect width="240" height="100" fill="'+C.sky+'"/>';
+ if(S.trip&&S.w<S.trip.u)s+=tripBg(S.trip.c);else if(S.drop){s+='<rect x="44" y="10" width="64" height="64" fill="#cfd3d8"/><rect x="40" y="6" width="72" height="5" fill="#7b8794"/>'+[0,1,2,3,4].map(r=>[0,1,2,3].map(k=>'<rect x="'+(50+k*14)+'" y="'+(15+r*10)+'" width="8" height="6" fill="'+((r*3+k)%5==0?"#ffe9a8":"#a9d3ea")+'"/>').join("")).join("")+'<rect x="68" y="62" width="16" height="12" fill="#5b6670"/><text x="76" y="8" font-size="4" fill="#fff" text-anchor="middle">우리 집 · 아파트</text>'}
+ else{s+='<rect x="8" y="22" width="110" height="52" fill="#b5654a"/><rect x="8" y="14" width="110" height="10" fill="#7d4a3a"/>'+(se==3?'<rect x="8" y="12" width="110" height="3" fill="#fff"/>':'')+'<text x="63" y="22" font-size="7" fill="#fff" text-anchor="middle">도개고등학교</text>';
+  for(let r=0;r<2;r++)for(let k=0;k<6;k++)s+='<rect x="'+(15+k*17)+'" y="'+(30+r*18)+'" width="10" height="10" fill="#cfe8f5"/>';
+  s+='<rect x="57" y="56" width="14" height="18" fill="#5a3b2e"/><rect x="124" y="20" width="1" height="54" fill="#555"/><rect x="125" y="20" width="9" height="6" fill="#a8324f"/>'}
+ s+='<rect y="74" width="240" height="26" fill="'+C.gr+'"/>'+(S.drop?'':'<rect y="84" width="240" height="8" fill="#c9bfa8"/>');
+ if(!(S.trip&&S.w<S.trip.u))s+=tree(128,C.tr)+tree(176,C.tr);
+ if(!S.drop&&!(S.trip&&S.w<S.trip.u))s+='<rect x="204" y="50" width="30" height="24" fill="#4a7bd1"/><text x="219" y="64" font-size="8" fill="#fff" text-anchor="middle">CU</text>';
+ if(!S.drop&&!(S.trip&&S.w<S.trip.u)&&key(D(S.w))=="11-3"&&grade(D(S.w))==3)s+='<polygon points="58,74 68,74 78,100 48,100" fill="#b3202a"/><polygon points="58,74 59.5,74 52,100 48,100" fill="#e0b84a"/><polygon points="66.5,74 68,74 78,100 74,100" fill="#e0b84a"/><text x="63" y="70" font-size="4" fill="#fff" text-anchor="middle">수능 대박!</text>';
+ if(C.pt)for(let i=0;i<14;i++){const px=(i*37+S.w*13)%236,py=se==3?(i*23+S.w*7)%70:76+(i*11)%20;s+='<rect x="'+px+'" y="'+py+'" width="2" height="2" fill="'+C.pt+'"/>'}
+ if(!S.drop&&!(S.trip&&S.w<S.trip.u)){
+  s+=av(138,50,1.7,mO(c[1]));
+  if(S.tch>0)s+=av(194,48,1.8,{h:"#111",s:"#e8b98d",body:"#5e4b36",leg:"#333",stick:1,nu:1})+av(216,52,1.6,Object.assign(mO(c[0]),{sad:1}))+'<text x="205" y="45" font-size="6" fill="#a8324f" text-anchor="middle">학생부</text>';
+  else s+=av(188,50,1.7,mO(c[0]));
+  if(S.bully)s+=av(176,50,1.7,mO(c[2]))+'<text x="190" y="46" font-size="10" fill="#c0392b">!</text>';
+  if(S.cat>=S.w-1||S.w%11==5)s+=cat(110,65,1.5,S.cat>=S.w-1?(S.cn||0):S.w%4)}
+ return s+av(158,44,2,myO(S.st.mind<30||S.bully))+'</svg>'+(S.trip&&S.w<S.trip.u?'<div class="mut">현재 위치: '+(S.trip.c=="sg"?"싱가포르":"독일")+' 국제교류 중 (학교 행사 불참)</div>':'')}
+const avBox=()=>'<svg viewBox="0 0 12 16" width="72" style="shape-rendering:crispEdges;background:var(--ln);border-radius:8px;flex:none">'+av(0,0,1,myO(0))+'</svg>';
+const Pp=(k,v)=>{S.plan[k]=v;render()},Tg=k=>{S.plan[k]=S.plan[k]?0:1;render()};
+function pg(l,k,o){return'<div class="pg"><b>'+l+'</b>'+o.map(([v,t])=>'<button class="'+(S.plan[k]===v?"on":"")+'" onclick="Pp(\''+k+'\','+(typeof v=="string"?"'"+v+"'":v)+')">'+t+'</button>').join("")+'</div>'}
+function planHTML(){const P=S.plan,o=S.own;
+ let h='<div class="mdh"><h2>이번 주 계획</h2><button onclick="S.modal=null;render()">닫기</button></div>'+pg("초점","act",[["study","공부"],["gym","운동"],["friend","친구"],["date","연애"],["rest","휴식"]]);
+ if(P.act=="date")h+=pg("대상","tg",[[0,"정하지 않음"]].concat([1,2,3].map(i=>[i,S.cm[i].n])));
+ h+=pg("수면","sleep",[[5,"5시간"],[6,"6시간"],[7,"7시간"],[8,"8시간"]]);
+ if(!S.drop)h+=pg("야자","yaja",[[0,"안 함"],[1,"1타임"],[2,"2타임"]]);
+ h+=pg("식사","meal",[[0,"규칙적"],[1,"편식"],[2,"매점·배달"],[3,"다이어트"]]);
+ h+='<div class="pg"><b>아침</b><button class="'+(P.bf?"on":"")+'" onclick="Tg(\'bf\')">'+(P.bf?"먹는다":"거른다")+'</button></div>';
+ h+='<div class="pg"><b>꾸미기</b><button '+(o.mk?"":"disabled ")+'class="'+(P.mk&&o.mk?"on":"")+'" onclick="Tg(\'mk\')">화장</button><button '+(o.dye?"":"disabled ")+'class="'+(P.dye&&o.dye?"on":"")+'" onclick="S.plan.dye=(S.plan.dye+1)%6;render()">염색'+(P.dye&&o.dye?" · "+DN[P.dye-1]:"")+'</button><button '+(o.tune?"":"disabled ")+'class="'+(P.tune&&o.tune?"on":"")+'" onclick="Tg(\'tune\')">교복 튜닝</button></div>';
+ h+=acaRow();return h+'<div class="mut">매점·배달은 주 1만5천원. 꾸미기는 돈 쓰기에서 산 뒤 켤 수 있고, 외모가 오르지만 단속 위험이 있어요.<br>교칙 위반 '+"●".repeat(S.viol)+"○".repeat(3-S.viol)+' (3회면 토요봉사)</div>'}
+function buy(k){const it=SHOP.find(x=>x[0]==k);if(!it)return;const[,n,p,,f,one]=it;if(S.money<p||(one&&S.own[k])||(!one&&S.bought[k]))return;
+ S.money-=p;if(one)S.own[k]=1;else S.bought[k]=1;if(f)ap(f);
+ if(k=="gift"){const c=S.cm[TG()];c.aff=cl(c.aff+8);say(c.n+"에게 선물을 줬다. (-"+won(p)+")")}else say(n+" 구매 (-"+won(p)+")"+(["mk","dye","tune"].includes(k)?" · 계획에서 켤 수 있다":""));render()}
+function shopHTML(){const tg=S.cm[TG()];
+ let h='<div class="mdh"><h2>돈 쓰기</h2><button onclick="S.modal=null;render()">닫기</button></div><div class="mut">지갑 <b style="color:var(--g)">'+won(S.money)+'</b> · 용돈 매주 '+won(S.allow)+' · 소모품은 주 1회</div>';
+ SHOP.forEach(([k,n,p,d,f,one])=>{const own=one&&S.own[k],used=!one&&S.bought[k],no=S.money<p;
+  h+='<div class="item"><div><b>'+(k=="gift"?n+" → "+tg.n:n)+'</b> <span class="mut">'+won(p)+'</span><small>'+d+'</small></div><button '+(own||used||no?"disabled ":"")+'onclick="buy(\''+k+'\')">'+(own?"보유":used?"이번 주 완료":no?"돈 부족":"구매")+'</button></div>'});
+ return h+'<div class="item"><div><b>야구잠바</b> <span class="mut">70,000원</span><small>1학년 4월 반 단체 주문 때만 살 수 있음 · 외모↑ · 흰 팔 + 네이비 몸통</small></div><button disabled>'+(S.jk?"보유":"단체 주문만")+'</button></div>'}
+function pathHTML(){
+ let h='<div class="mdh"><h2>진로</h2><button onclick="S.modal=null;render()">닫기</button></div><div class="kv"><span>계열</span>'+(S.sci||"미선택 (1학년 12월에 결정)")+'<span>세특</span>'+skl(S.setk)+' ('+Math.round(S.setk)+')<span>내신</span>'+nav()+'등급 (5등급제)<span>신분</span>'+(S.drop?"자퇴생 · 검정고시 "+(S.ged?"합격":"준비 중 (4월·8월)"):"재학생"+(S.scc?" · SC반":"")+(S.sd?" · 선도부":""))+'<span>통학</span>'+(S.dorm?"기숙사":CT[S.ct])+'<span>특성</span>'+(S.tr.length?S.tr.join(", "):"없음")+(S.rec?'<span>학폭기록</span>'+SV[S.rec-1]+" (대학 합격 불리)":"")+'</div>';
+ h+='<div class="mut">희망 학과</div><select onchange="S.want=this.value===\'\'?null:+this.value;render()"><option value="">미정</option>'+M.map((n,i)=>'<option value="'+i+'"'+(S.want===i?" selected":"")+'>'+n+'</option>').join("")+'</select>';
+ h+='<p class="mut">'+(S.drop?"자퇴생은 검정고시에 합격하고 수능을 봐서 정시로만 지원할 수 있어요.":"3학년 9월에 수시(학종·교과) 6장, 12월에 정시 3장을 냅니다. 학종은 내신과 세특, 교과는 내신, 정시는 수능으로 봐요.")+'</p>';
+ if(!S.drop)h+=S.qc?'<div class="mut">자퇴하면 집에서 검정고시와 수능을 준비하고, 정시로만 대학에 지원할 수 있어요.</div><button class="d" onclick="S.qc=0;S.modal=null;dropOut();render()">정말 자퇴하기</button><button onclick="S.qc=0;render()">취소</button>':'<button class="d" onclick="S.qc=1;render()">자퇴</button>';
+ return h}
+function addApp0(){const L=S.phase=="susi"?6:3,f=S.fm;if(S.sel.length>=L||elig(f.u))return;if(S.sel.some(a=>a.u==f.u&&a.m==f.m&&a.ty==f.ty))return;S.sel.push({ty:f.ty,u:f.u,m:f.m});render()}
+function addApp(){const L=S.phase=="susi"?6:3,f=S.fm;S.nt="";if(S.sel.length>=L||elig(f.u))return render();
+ if(S.sel.some(a=>a.u==f.u&&a.m==f.m&&a.ty==f.ty)){S.nt="이미 담은 원서예요. 대학·학과·전형을 바꿔서 추가하세요.";return render()}
+ S.sel.push({ty:f.ty,u:f.u,m:f.m});let n=0;do{f.u=(f.u+1)%UNIV.length}while(elig(f.u)&&++n<UNIV.length);S.nt=S.sel.length+"장 담았어요. 다음 원서를 골라 보세요.";render()}
+function fin(){S.nt="";S.apps[S.phase]=S.sel.slice();say((S.phase=="susi"?"수시":"정시")+" 원서 "+S.sel.length+"장을 접수했다.");S.phase=null;S.sel=[];if(!S.ev)S.ev=pick();render()}
+function appHTML(){const su=S.phase=="susi",L=su?6:3,f=S.fm;f.ty=su?(f.ty==2?0:f.ty):2;
+ let h='<div class="mdh"><h2>'+(su?"수시":"정시")+' 원서 접수 ('+S.sel.length+'/'+L+')</h2></div><div class="mut">'+(su?"내신 평균 "+nav()+"등급 · 세특 "+skl(S.setk)+" · 학종은 내신+세특, 교과는 내신으로 봐요.":"수능 평균 백분위 "+(S.sun!=null?Math.round(100-S.sun):"-")+" · 가·나·다군 각 1장")+'</div>';
+ h+='<div class="fr"><input placeholder="대학 검색" value="'+esc(S.qu||"")+'" onchange="srchU(this.value)"><input placeholder="학과 검색" value="'+esc(S.qm||"")+'" onchange="srchM(this.value)"></div><div class="fr">'+(su?'<select onchange="S.fm.ty=+this.value;render()">'+[0,1].map(t=>'<option value="'+t+'"'+(f.ty==t?" selected":"")+'>'+TY[t]+'</option>').join("")+'</select>':'')+'<select onchange="S.fm.u=+this.value;render()">'+UNIV.map((u,i)=>[u,i]).filter(([u])=>!S.qu||u[0].includes(S.qu)).map(([u,i])=>'<option value="'+i+'"'+(f.u==i?" selected":"")+'>'+u[0]+(elig(i)?" ("+elig(i)+")":"")+'</option>').join("")+'</select></div>';
+ h+='<div class="fr"><select onchange="S.fm.m=+this.value;render()">'+M.map((n,i)=>[n,i]).filter(([n])=>!S.qm||n.includes(S.qm)).map(([n,i])=>'<option value="'+i+'"'+(f.m==i?" selected":"")+'>'+n+'</option>').join("")+'</select><button class="p" '+(S.sel.length>=L||elig(f.u)?"disabled ":"")+'onclick="addApp()">추가</button></div>';
+ h+=(S.nt?'<div class="mut" style="color:var(--ac)">'+S.nt+'</div>':'')+'<div class="mut">예상: '+(elig(f.u)?"지원 불가 ("+elig(f.u)+")":chL(chance(f.ty,f.u,f.m)))+'</div><div style="margin:8px 0">';
+ h+=S.sel.map((a,j)=>'<div class="row"><span>'+(su?TY[a.ty]:"가나다"[j]+"군")+' · '+UNIV[a.u][0]+' '+M[a.m]+'<br><span class="mut">'+chL(chance(a.ty,a.u,a.m))+'</span></span><button class="d" onclick="S.sel.splice('+j+',1);render()">삭제</button></div>').join("")||'<div class="mut">아직 고른 원서가 없어요.</div>';
+ return h+'</div><button class="p" onclick="fin()">접수 완료</button>'}
+function repCard(){const r=S.rep;if(!r)return"";const rk=r.rank?'전교 '+r.rank+'등 / 126명':'자퇴생 · 전국 기준';
+ let h='<div class="card"><h2>성적표 · '+r.n+'</h2>';
+ if(r.k=="내신")h+='<div class="rg">'+r.g5+'등급</div><div class="mut">5등급제 · '+rk+'</div>';
+ else h+='<table><tr><th></th><th>표준</th><th>백분위</th><th>등급</th></tr>'+r.sub.map(x=>'<tr><td>'+x.join("</td><td>")+'</td></tr>').join("")+'</table><div class="mut">평균 백분위 '+r.avg+' · 종합 '+r.g9+'등급(9등급제) · '+rk+'</div>';
+ return h+'<div class="mut">'+(S.drop?'':'하위 '+S.ath+'명은 운동부 · ')+'내신 평균 '+nav()+'등급'+(S.fri?' · 금요 모고 '+S.fri+'등급':'')+'</div></div>'}
+function resCard(){if(!S.res||!S.res.length)return"";return'<div class="card"><h2>대학 결과</h2>'+S.res.map(r=>'<div class="row"><span>'+TY[r.ty]+' · '+UNIV[r.u][0]+' '+M[r.m]+'</span><b style="color:var(--'+(r.ok?"g":"r")+')">'+(r.ok?"합격":"불합격")+'</b></div>').join("")+'</div>'}
+function setG(v){S.g=v;if(v=="남")S.pants=true;mkCm(S);render()}
+function setMid(i){const m=MS[i];S.mid=m[0];S.from=m[2];S.ct=m[3];render()}
+function pwTry(){const v=(document.getElementById("pw").value||"").trim();if(v=="미쯔"){S.unlock=1;S.pe=0}else S.pe=1;render()}
+function startGame(){musOn();S.started=1;paused=false;prog=0;say("2025년 3월, 도개고 입학식. 3년의 생존이 시작된다.");if(S.ct!="walk"){S.ev=dormEv();S.qq=[clubEv()]}else{S.ev=clubEv();S.qq=[]}render()}
+function editor(){
+ const sl=(k,l)=>'<div class="sl"><span>'+l+'</span><input type="range" min="1" max="100" value="'+S.st[k]+'" oninput="this.nextElementSibling.textContent=this.value" onchange="S.st.'+k+'=+this.value;render()"><b>'+S.st[k]+'</b></div>';
+ const bt=(cur,v,t,fn)=>'<button class="'+(cur==v?"on":"")+'" onclick="'+fn+'">'+t+'</button>';
+ return'<div class="card ev"><h2>캐릭터 직접 만들기</h2>'+
+ '<div class="sl"><span>이름</span><input value="'+esc(S.name)+'" maxlength="8" onchange="S.name=this.value.trim()||S.name;render()"><i></i></div>'+
+ '<div class="pg"><b>성별</b>'+bt(S.g,"남","남","setG(\'남\')")+bt(S.g,"여","여","setG(\'여\')")+'</div>'+
+ (S.g=="여"?'<div class="pg"><b>하의</b>'+bt(S.pants,true,"바지","S.pants=true;render()")+bt(S.pants,false,"치마","S.pants=false;render()")+'</div>':'')+
+ '<div class="sl"><span>출신</span><select onchange="setMid(+this.value)">'+MS.map((m,i)=>'<option value="'+i+'"'+(m[0]==S.mid?" selected":"")+'>'+m[0]+' ('+m[2]+')</option>').join("")+'</select><i></i></div>'+
+ '<div class="sl"><span>내신</span><input type="number" min="150" max="300" value="'+S.sc+'" onchange="S.sc=Math.round(cl(+this.value||262,150,300));S.K=kOf(S.sc);render()"><i class="mut">/300</i></div>'+
+ '<div class="sl"><span>용돈</span><select onchange="S.allow=+this.value;render()">'+ALW.map(([v])=>'<option value="'+v+'"'+(v==S.allow?" selected":"")+'>주 '+won(v)+'</option>').join("")+'</select><i></i></div>'+
+ sl("int","지능")+sl("look","외모")+sl("body","체력")+sl("mind","멘탈")+sl("rel","관계")+'<div class="pg"><b>특성</b>'+TR.map(t=>'<button class="'+(S.tr.includes(t[0])?"on":"")+'" onclick="tgT(\''+t[0]+'\')">'+t[0]+'</button>').join("")+'</div></div>'}
+function startHTML(){
+ let h='<div class="card"><h1>도개고 살아남기</h1><p class="mut">2025년 3월, 경북 구미시 도개면. 한 칸은 한 주. 2027년 12월 대학 결과까지 버텨라.</p></div>';
+ h+='<div class="card"><div style="display:flex;gap:12px">'+avBox()+'<div><b style="font-size:18px">'+esc(S.name)+'</b> ('+S.g+(S.g=="여"?(S.pants?" · 바지":" · 치마"):"")+')<div class="mut">출신 '+S.mid+' · '+S.from+' · '+CT[S.ct]+'</div><div>중학교 내신 <b>'+S.sc+'</b> / 300</div><div class="mut">용돈 매주 '+won(S.allow)+'</div><div class="mut">특성: '+(S.tr.length?S.tr.join(", "):"없음")+'</div></div></div>'+bar("지능",S.st.int,"b")+bar("외모",S.st.look,"y")+bar("체력",S.st.body,"g")+bar("멘탈",S.st.mind,"ac")+bar("관계",S.st.rel,"ac")+'<button class="p" onclick="startGame()">입학하기</button><button onclick="S=newChar();render()">다른 사람으로</button></div>';
+ if(!S.unlock)h+='<div class="card"><h2>디버그 · 테스트용</h2><div class="fr"><input id="pw" placeholder="디버그·테스트용 (캐릭터 직접 만들기)"><button onclick="pwTry()">확인</button></div>'+(S.pe?'<div class="mut" style="color:var(--r)">비밀번호가 틀렸어요.</div>':'')+'</div>';
+ else h+=editor();
+ h+=netCard()+(HS&&DB?'<div class="card"><button class="p" onclick="loadGame()">저장된 게임 이어하기</button></div>':'');return h+'<p class="mut">학교 정보는 학교알리미(사립·1974년 설립)를 참고했고, 출신 중학교·이벤트·대학 합격선은 가상 설정입니다.</p>'}
+function render(){
+ const a=document.getElementById("app");if(!S)S=newChar();
+ const md=document.querySelector(".md"),mst=md?md.scrollTop:0;
+ if(!S.started){a.innerHTML=startHTML();return}
+ const d=D(S.w),g=grade(d),kk=key(d),ex=S.drop?(g==3&&kk=="11-3"?"수능":null):(NAE[kk]&&!(g==3&&d.getMonth()>=9)?NAE[kk]:mokName(kk,g)),mi=(d.getFullYear()-2025)*12+d.getMonth()-2,P=S.plan;
+ let h='<div class="top"><span class="big">'+(S.drop?"자퇴생":"고"+g)+'</span><span class="mut">'+fmt(d)+' · '+esc(S.name)+(ex&&!S.done?' · 이번 주 <b style="color:var(--ac)">'+ex+'</b>':'')+'</span><span class="money">'+won(S.money)+'</span></div><div class="prog"><s id="gauge" style="width:'+prog*100+'%"></s></div>';
+ if(!S.done){h+='<div class="ctl"><button class="'+(paused?"p":"on")+'" onclick="paused=!paused;render()">'+(paused?"▶ 계속":"❚❚ 멈춤")+'</button>';
+  [1,2,4,8].forEach(x=>h+='<button class="'+(spd==x?"on":"")+'" onclick="spd='+x+';paused=false;render()">'+x+'×</button>');
+  h+='<button onclick="skip=1;paused=false">다음 결정까지 »</button><button onclick="prog=0;next()">+1주</button><button onclick="musToggle()">♪ '+(mus?"켜짐":"꺼짐")+'</button>'+(DB&&UID?'<button onclick="saveGame()">저장</button>':'')+'</div>';
+  h+='<div class="acts"><button onclick="S.modal=\'plan\';render()">계획</button><button onclick="S.modal=\'shop\';render()">돈 쓰기</button><button onclick="S.modal=\'path\';render()">진로</button></div><div class="mut" style="margin-bottom:10px">이번 주: '+AN[P.act]+(P.act=="date"?"("+(P.tg>0?S.cm[P.tg].n:"정하지 않음")+")":"")+' · 수면 '+P.sleep+'시간'+(S.drop?'':' · 야자 '+(P.yaja?P.yaja+"타임":"안 함"))+' · '+MEAL[P.meal]+'</div>'}
+ h+='<div class="grid"><div class="c1"><div class="card"><div class="idh">신원 기록 · KOR <span>'+(d.getFullYear()-1)+'</span></div><div style="display:flex;gap:12px;margin-top:8px">'+avBox()+'<div><b style="font-size:18px">'+esc(S.name)+'</b><div class="mut">'+S.g+' · '+(S.drop?"자퇴생":"도개고 "+g+"학년")+(S.scc?' · SC반':'')+(S.sd?' · 선도부':'')+'</div></div></div><div class="kv"><span>출신</span>'+S.mid+'<span>통학</span>'+(S.drop?"-":S.dorm?"기숙사":CT[S.ct])+'<span>용돈</span>매주 '+won(S.allow)+'<span>동아리</span>'+(S.club||"없음")+'<span>특성</span>'+(S.tr.length?S.tr.join(", "):"없음")+(S.rec?'<span>학폭</span>'+SV[S.rec-1]:'')+'<span>계열</span>'+(S.sci||"미선택")+'<span>희망</span>'+(S.want!=null?M[S.want]:"미정")+'</div></div>';
+ h+='<div class="card"><h2>상태</h2>'+bar("지능",S.st.int,"b")+bar("실력",S.K,"g")+bar("외모",EL(),"y")+bar("체력",S.st.body,"g")+bar("멘탈",S.st.mind,"ac")+bar("관계",S.st.rel,"ac")+bar("세특",S.setk,"b")+'</div>'+repCard()+'</div><div class="c2"><div class="card">'+scene()+'<div class="mut" style="margin-top:6px">'+(S.drop?'집 · 검정고시 '+(S.ged?'합격':'준비 중'):'도개고등학교 · 도개초·도개보건지소 옆')+(S.bully?' · <span style="color:var(--r)">학폭 피해 중</span>':'')+(S.tch>0?' · 학생부 쌤 출동':'')+'</div></div>';
+ if(S.done)h+='<div class="card ev"><h2>'+S.done.t+' 엔딩</h2><p>'+esc(S.done.x)+'</p>'+(S.done.sm||'')+'<button class="p" onclick="S=null;paused=false;prog=0;render()">새로 시작</button></div>'+resCard();
+ else if(S.ev){h+='<div class="card ev"><h2>결정할 시간</h2><p>'+S.ev.t+'</p>';S.ev.c.forEach((c,i)=>{const lack=c[1].cost&&S.money<c[1].cost;h+='<button class="'+(lack?"dim":"")+'" onclick="choose('+i+')">'+c[0]+(lack?" · 돈 부족":"")+'</button>'});h+='</div>'}
+ h+='<div class="card log"><h2>인생 기록</h2>';
+ S.log.slice(0,50).forEach(l=>h+='<p><span class="t">'+l.t+'</span> '+l.x+'</p>');if(!S.log.length)h+='<p class="mut">아직 기록이 없습니다.</p>';
+ h+='</div></div><div class="c3"><div class="card"><h2>같은 반 친구들</h2>';
+ S.cm.forEach((c,i)=>h+='<div class="row"><b>'+c.n+' <span class="mut">'+(c.f?"여":"남")+'</span></b><span class="mut">'+(i==0?(S.bully?'<span style="color:var(--r)">가해 무리 우두머리</span>':c.r):["안면","썸","연애 중","이별"][c.st]+' ♥'+Math.round(c.aff))+'</span></div>'+'<div class="mut" style="margin:-3px 0 6px">'+(c.tr&&c.tr.length?((c.rv||0)>0?c.tr.slice(0,c.rv).join(" · "):"")+((c.rv||0)<c.tr.length?" (아직 잘 모른다)":""):"특성 없음")+(c.ab?"<br>친밀도 "+Math.round(c.fr==null?40:c.fr)+" · 내신 "+c.ab.gr+"등급 · 체력 "+Math.round(c.ab.body)+" · 지능 "+Math.round(c.ab.int)+" · 외모 "+Math.round(c.ab.look)+" · 멘탈 "+Math.round(c.ab.mind):"")+'</div>');
+ h+='</div><div class="card"><h2>인생 지도</h2><div class="map">';for(let i=0;i<34;i++)h+='<i class="'+(i<mi?"dn":i==mi?"nw":"")+'"></i>';h+='</div><div class="mut">한 칸 = 1개월 · 2025.3 → 2027.12</div></div>'+netCard()+'</div></div>';
+ if(S.phase)h+='<div class="ov"><div class="md">'+appHTML()+'</div></div>';
+ else if(S.modal&&!S.done)h+='<div class="ov" onclick="if(event.target===this){S.modal=null;S.qc=0;render()}"><div class="md">'+({plan:planHTML,shop:shopHTML,path:pathHTML,mkc:mkcHTML})[S.modal]()+'</div></div>';
+ if(S.done&&!S.cr)h+=creditsHTML();a.innerHTML=h;pres();const md2=document.querySelector(".md");if(md2)md2.scrollTop=mst}
+setInterval(()=>{if(!S||!S.started||S.done)return;if(S.ev||S.phase||S.modal){skip=0;return}
+ if(skip){for(let i=0;i<2&&skip&&!S.ev&&!S.phase&&!S.done;i++)next();return}
+ if(paused)return;prog+=.1*spd/3;if(prog>=1){prog=0;next();return}
+ const e=document.getElementById("gauge");if(e)e.style.width=prog*100+"%"},100);
+S=newChar();render();netInit();
+</script></body></html>
